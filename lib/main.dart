@@ -19,7 +19,8 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData.dark().copyWith(
           scaffoldBackgroundColor: blackColorWhiteTheme,
-          appBarTheme: AppBarTheme().copyWith(color: blackColorWhiteTheme)),
+          appBarTheme: AppBarTheme().copyWith(color: blackColorWhiteTheme),
+          canvasColor: drawerColorDarkTheme),
       getPages: [
         GetPage(
           name: '/',
