@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:tims/utils.dart';
-import 'package:tims/widgets/navigation_drawer_tile.dart';
+
+import '../utils.dart';
+import '/widgets/navigation_drawer_tile.dart';
+import 'timer_screen.dart';
 
 class MainRoute extends StatelessWidget {
   MainRoute({Key? key}) : super(key: key);
-  List<Widget> screens = [];
+  List<Widget> screens = [const TimerScreen()];
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class MainRoute extends StatelessWidget {
           ],
         ),
         drawer: _MainRouteDrawer(),
-        body: Container());
+        body: screens[0]);
   }
 }
 
