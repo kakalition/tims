@@ -19,8 +19,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData.dark().copyWith(
           scaffoldBackgroundColor: blackColorWhiteTheme,
-          appBarTheme: AppBarTheme().copyWith(color: blackColorWhiteTheme),
-          canvasColor: drawerColorDarkTheme),
+          appBarTheme: AppBarTheme().copyWith(color: blackColorWhiteTheme)),
       getPages: [
         GetPage(
           name: '/',
@@ -28,7 +27,7 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
             name: '/main',
-            page: () => const MainRoute(),
+            page: () => MainRoute(),
             transition: Transition.fadeIn,
             transitionDuration: const Duration(milliseconds: 200)),
       ],
