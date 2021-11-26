@@ -15,7 +15,10 @@ class MainRoute extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text("Study Timer"),
+          title: Text(
+            "Study Timer",
+            style: GoogleFonts.montserrat(fontSize: 20),
+          ),
           leading: Builder(builder: (context) {
             return IconButton(
               onPressed: () {
@@ -59,12 +62,10 @@ class _MainRouteDrawer extends StatelessWidget {
                 children: [
                   Icon(LineIcons.user, size: 120),
                   const SizedBox(height: 50),
-                  timsTextBuilderWithStyle(
-                      text: "Kaka",
-                      textStyle: Theme.of(context).textTheme.headline4!),
+                  timsTextBuilder(text: "Kaka", textSize: 24),
                   const SizedBox(height: 10),
                   timsTextBuilderWithStyle(
-                      text: "TIMS Developer",
+                      text: "Ambition will bring success",
                       textStyle: Theme.of(context).textTheme.headline6!),
                 ],
               ),
