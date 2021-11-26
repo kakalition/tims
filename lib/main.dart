@@ -1,3 +1,5 @@
+import 'package:tims/constants.dart';
+
 import '../routes/splash_route.dart';
 
 import 'package:flutter/material.dart';
@@ -14,7 +16,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData.dark(),
+      theme: ThemeData.dark()
+          .copyWith(scaffoldBackgroundColor: blackColorWhiteTheme),
       getPages: [
         GetPage(
           name: '/',
