@@ -1,4 +1,5 @@
 import 'package:tims/constants.dart';
+import 'package:tims/routes/main_route.dart';
 
 import '../routes/splash_route.dart';
 
@@ -23,6 +24,11 @@ class MyApp extends StatelessWidget {
           name: '/',
           page: () => const SplashRoute(),
         ),
+        GetPage(
+            name: '/main',
+            page: () => const MainRoute(),
+            transition: Transition.fadeIn,
+            transitionDuration: const Duration(milliseconds: 200)),
       ],
       initialRoute: '/',
     );

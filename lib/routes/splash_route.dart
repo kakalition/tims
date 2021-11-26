@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:tims/constants.dart';
@@ -8,6 +11,7 @@ class SplashRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Timer(const Duration(seconds: 2), () => Get.offNamed('/main'));
     return Scaffold(
       body: Center(
         child: Column(
