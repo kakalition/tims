@@ -5,8 +5,8 @@ import 'package:line_icons/line_icons.dart';
 import '../constants.dart';
 import '../utils.dart';
 
-class TimerScreen extends StatelessWidget {
-  const TimerScreen({Key? key}) : super(key: key);
+class StopwatchScreen extends StatelessWidget {
+  const StopwatchScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,20 +23,37 @@ class TimerScreen extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: [
           // Time Circle
-          Container(
-              alignment: Alignment.center,
-              height: timerCircleSize,
-              width: timerCircleSize,
-              decoration: BoxDecoration(
-                border: Border.all(width: 12, color: whiteColorDarkTheme),
-                borderRadius: BorderRadius.circular(
-                  timerCircleSize,
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              Container(
+                alignment: Alignment.center,
+                height: timerCircleSize,
+                width: timerCircleSize,
+                decoration: BoxDecoration(
+                  border: Border.all(width: 12, color: Color(0xFF212121)),
+                  borderRadius: BorderRadius.circular(
+                    timerCircleSize,
+                  ),
+                ),
+                child: Text(
+                  "00:00:00",
+                  style: GoogleFonts.montserrat(fontSize: 34),
                 ),
               ),
-              child: Text(
-                "00:24:00",
-                style: GoogleFonts.montserrat(fontSize: 34),
-              )),
+              Positioned(
+                top: 0,
+                child: Container(
+                  height: 12,
+                  width: 12,
+                  decoration: BoxDecoration(
+                    color: whiteColorDarkTheme,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+            ],
+          ),
           const SizedBox(
             height: 30,
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:tims/routes/stopwatch_screen.dart';
 
 import '../constants.dart';
 import '../utils.dart';
@@ -8,7 +9,7 @@ import 'timer_screen.dart';
 
 class MainRoute extends StatelessWidget {
   MainRoute({Key? key}) : super(key: key);
-  List<Widget> screens = [const TimerScreen()];
+  List<Widget> screens = [const TimerScreen(), const StopwatchScreen()];
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,7 @@ class MainRoute extends StatelessWidget {
           ],
         ),
         drawer: _MainRouteDrawer(),
-        body: screens[0]);
+        body: screens[1]);
   }
 }
 
