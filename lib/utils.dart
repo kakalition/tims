@@ -9,7 +9,7 @@ Widget timsTextBuilderWithStyle(
 Widget timsTextBuilder(
     {required String text,
     required double textSize,
-    fontWeight = FontWeight.w500}) {
+    FontWeight fontWeight = FontWeight.w500}) {
   return Text(text,
       style: GoogleFonts.lato(fontSize: textSize, fontWeight: fontWeight));
 }
