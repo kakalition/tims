@@ -99,4 +99,4 @@ class TimerScreen extends StatelessWidget {
 }
 
 double getCircleTimerSize(BuildContext context) =>
-    MediaQuery.of(context).size.width * 0.65;
+    MediaQuery.of(context).size.width * 0.62;
