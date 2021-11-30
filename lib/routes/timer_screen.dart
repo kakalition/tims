@@ -8,6 +8,12 @@ class TimerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double timerCircleSize = getCircleTimerSize(context);
+    final double playButtonSize = timerCircleSize / 1.618 / 1.5;
+    final double restartButtonSize = playButtonSize / 1.618;
+    final double playIconSize = playButtonSize * 0.4;
+    final double restartIconSize = restartButtonSize * 0.4;
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -17,12 +23,12 @@ class TimerScreen extends StatelessWidget {
           // Time Circle
           Container(
               alignment: Alignment.center,
-              height: MediaQuery.of(context).size.width * 0.65,
-              width: MediaQuery.of(context).size.width * 0.65,
+              height: timerCircleSize,
+              width: timerCircleSize,
               decoration: BoxDecoration(
                 border: Border.all(width: 12, color: whiteColorDarkTheme),
                 borderRadius: BorderRadius.circular(
-                  MediaQuery.of(context).size.width * 0.65,
+                  timerCircleSize,
                 ),
               ),
               child: Text(
@@ -35,25 +41,23 @@ class TimerScreen extends StatelessWidget {
 
           // Play/Stop Button
           Material(
-            borderRadius: BorderRadius.circular(
-                MediaQuery.of(context).size.width * 0.65 / 1.618 / 1.5),
+            borderRadius: BorderRadius.circular(playButtonSize),
             child: InkWell(
               onTap: () {},
-              borderRadius: BorderRadius.circular(
-                  MediaQuery.of(context).size.width * 0.65 / 1.618 / 1.5),
+              borderRadius: BorderRadius.circular(playButtonSize),
               child: Container(
-                height: MediaQuery.of(context).size.width * 0.65 / 1.618 / 1.5,
-                width: MediaQuery.of(context).size.width * 0.65 / 1.618 / 1.5,
+                height: playButtonSize,
+                width: playButtonSize,
                 decoration: BoxDecoration(
                   border: Border.all(width: 5, color: whiteColorDarkTheme),
                   borderRadius: BorderRadius.circular(
-                    MediaQuery.of(context).size.width * 0.65 / 1.618 / 1.5,
+                    playButtonSize,
                   ),
                 ),
                 child: Icon(
                   LineIcons.play,
                   color: whiteColorDarkTheme,
-                  size: MediaQuery.of(context).size.width * 0.125,
+                  size: playIconSize,
                 ),
               ),
             ),
@@ -64,25 +68,23 @@ class TimerScreen extends StatelessWidget {
 
           // Restart Button
           Material(
-            borderRadius:
-                BorderRadius.circular(MediaQuery.of(context).size.width * 0.18),
+            borderRadius: BorderRadius.circular(restartButtonSize),
             child: InkWell(
               onTap: () {},
-              borderRadius: BorderRadius.circular(
-                  MediaQuery.of(context).size.width * 0.18),
+              borderRadius: BorderRadius.circular(restartButtonSize),
               child: Container(
-                height: MediaQuery.of(context).size.width * 0.18,
-                width: MediaQuery.of(context).size.width * 0.18,
+                height: restartButtonSize,
+                width: restartButtonSize,
                 decoration: BoxDecoration(
                   border: Border.all(width: 5, color: whiteColorDarkTheme),
                   borderRadius: BorderRadius.circular(
-                    MediaQuery.of(context).size.width * 0.18,
+                    restartButtonSize,
                   ),
                 ),
                 child: Icon(
                   Icons.replay,
                   color: whiteColorDarkTheme,
-                  size: MediaQuery.of(context).size.width * 0.08,
+                  size: restartIconSize,
                 ),
               ),
             ),
@@ -90,33 +92,11 @@ class TimerScreen extends StatelessWidget {
           const SizedBox(
             height: 80,
           ),
-
-          // FAB
-          Material(
-            color: whiteColorDarkTheme,
-            borderRadius:
-                BorderRadius.circular(MediaQuery.of(context).size.width * 0.12),
-            child: InkWell(
-              onTap: () {},
-              borderRadius: BorderRadius.circular(
-                  MediaQuery.of(context).size.width * 0.12),
-              child: Container(
-                  height: MediaQuery.of(context).size.width * 0.12,
-                  width: MediaQuery.of(context).size.width * 0.12,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
-                      MediaQuery.of(context).size.width * 0.12,
-                    ),
-                  ),
-                  child: Icon(
-                    LineIcons.plus,
-                    color: blackColorWhiteTheme,
-                    size: MediaQuery.of(context).size.width * 0.06,
-                  )),
-            ),
-          ),
         ],
       ),
     );
   }
 }
+
+double getCircleTimerSize(BuildContext context) =>
+    MediaQuery.of(context).size.width * 0.65;

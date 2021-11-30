@@ -60,13 +60,15 @@ class _MainRouteDrawer extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(LineIcons.user, size: 120),
+                  Icon(LineIcons.userCircleAlt, size: 100),
                   const SizedBox(height: 50),
-                  timsTextBuilder(text: "Kaka", textSize: 24),
+                  timsTextBuilder(
+                      text: "Kaka", textSize: 24, fontWeight: FontWeight.w600),
                   const SizedBox(height: 10),
-                  timsTextBuilderWithStyle(
-                      text: "Ambition will bring success",
-                      textStyle: Theme.of(context).textTheme.headline6!),
+                  timsTextBuilder(
+                      text: "Ambition bring success",
+                      textSize: 18,
+                      fontWeight: FontWeight.w400),
                 ],
               ),
             ),
