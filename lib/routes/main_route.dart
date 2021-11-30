@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:tims/routes/stopwatch_screen.dart';
+import 'package:tims/routes/timer_list_screen.dart';
 
 import '../constants.dart';
 import '../utils.dart';
@@ -9,32 +10,39 @@ import 'timer_screen.dart';
 
 class MainRoute extends StatelessWidget {
   MainRoute({Key? key}) : super(key: key);
-  List<Widget> screens = [const TimerScreen(), const StopwatchScreen()];
+  List<Widget> screens = [
+    const TimerScreen(),
+    const StopwatchScreen(),
+    const TimerListScreen()
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text(
-            "Study Timer",
-            style: GoogleFonts.montserrat(fontSize: 20),
-          ),
-          leading: Builder(builder: (context) {
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          "Study Timer",
+          style: GoogleFonts.montserrat(fontSize: 20),
+        ),
+        leading: Builder(
+          builder: (context) {
             return IconButton(
               onPressed: () {
                 Scaffold.of(context).openDrawer();
               },
               icon: Icon(LineIcons.gripLines),
             );
-          }),
-          elevation: 0,
-          actions: [
-            IconButton(onPressed: () {}, icon: const Icon(LineIcons.cog))
-          ],
+          },
         ),
-        drawer: _MainRouteDrawer(),
-        body: screens[1]);
+        elevation: 0,
+        actions: [
+          IconButton(onPressed: () {}, icon: const Icon(LineIcons.cog))
+        ],
+      ),
+      drawer: _MainRouteDrawer(),
+      body: screens[2],
+    );
   }
 }
 
