@@ -43,7 +43,7 @@ class MainRoute extends StatelessWidget {
         ],
       ),
       drawer: _MainRouteDrawer(),
-      body: screens[3],
+      body: screens[2],
     );
   }
 }
@@ -105,9 +105,9 @@ class _MainRouteDrawer extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 8),
                     child: NavigationDrawerTile(
-                      icon: LineIcons.list,
-                      tileLabel: 'Timer List',
-                    ),
+                        icon: LineIcons.list,
+                        tileLabel: 'Timer List',
+                        active: true),
                   ),
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 8),
@@ -127,47 +127,41 @@ class _MainRouteDrawer extends StatelessWidget {
 }
 
 class NavigationDrawerTile extends StatelessWidget {
-  NavigationDrawerTile({Key? key, required this.icon, required this.tileLabel})
+  NavigationDrawerTile(
+      {Key? key,
+      required this.icon,
+      required this.tileLabel,
+      this.active = false})
       : super(key: key);
   IconData icon;
   String tileLabel;
+  bool active;
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: drawerTileDarkTheme,
+      color: active ? drawerTileDarkTheme : Colors.transparent,
       borderRadius: BorderRadius.circular(55),
       child: InkWell(
         onTap: () {},
         borderRadius: BorderRadius.circular(55),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Container(
-              height: 50,
-              width: double.infinity,
-              decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(55)),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              height: 55,
-              width: double.infinity,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                      alignment: Alignment.center, child: Icon(icon, size: 32)),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  timsTextBuilder(text: tileLabel, textSize: 18)
-                ],
+        child: Container(
+          alignment: Alignment.centerLeft,
+          padding: EdgeInsets.symmetric(horizontal: 15),
+          height: 55,
+          width: double.infinity,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                  alignment: Alignment.center, child: Icon(icon, size: 32)),
+              const SizedBox(
+                width: 5,
               ),
-            ),
-          ],
+              timsTextBuilder(text: tileLabel, textSize: 18)
+            ],
+          ),
         ),
       ),
     );
