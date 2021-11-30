@@ -47,7 +47,104 @@ class TimerListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  topRight: Radius.circular(10),
+                ),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Material(
+                    color: whiteColorDarkTheme,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                    ),
+                    child: InkWell(
+                      onTap: () {},
+                      child: Container(
+                        margin: EdgeInsets.all(12),
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(8),
+                              child: Icon(LineIcons.seedling,
+                                  color: blackColorWhiteTheme, size: 32),
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            timsTextBuilder(
+                                text: 'Use',
+                                textSize: 24,
+                                color: blackColorWhiteTheme),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Material(
+                    color: whiteColorDarkTheme,
+                    child: InkWell(
+                      onTap: () {},
+                      child: Container(
+                        margin: EdgeInsets.all(12),
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(8),
+                              child: Icon(LineIcons.pencilRuler,
+                                  color: blackColorWhiteTheme, size: 32),
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            timsTextBuilder(
+                                text: 'Edit',
+                                textSize: 24,
+                                color: blackColorWhiteTheme),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Material(
+                    color: whiteColorDarkTheme,
+                    child: InkWell(
+                      child: Container(
+                        margin: EdgeInsets.all(12),
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(8),
+                              child: Icon(LineIcons.trash,
+                                  color: blackColorWhiteTheme, size: 32),
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            timsTextBuilder(
+                                text: 'Delete',
+                                textSize: 24,
+                                color: blackColorWhiteTheme),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
       child: Container(
         margin: EdgeInsets.all(4),
         child: Row(
