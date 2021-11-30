@@ -1,5 +1,6 @@
 import 'package:tims/constants.dart';
 import 'package:tims/routes/main_route.dart';
+import 'package:tims/routes/stopwatch_screen.dart';
 
 import '../routes/splash_route.dart';
 

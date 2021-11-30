@@ -13,3 +13,6 @@ Widget timsTextBuilder(
   return Text(text,
       style: GoogleFonts.lato(fontSize: textSize, fontWeight: fontWeight));
 }
+
+double getCircleTimerSize(BuildContext context) =>
+    MediaQuery.of(context).size.width * 0.62;
