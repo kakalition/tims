@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:tims/utils.dart';
-import 'package:tims/widgets/navigation_drawer_tile.dart';
+
+import '../constants.dart';
+import '../utils.dart';
+import 'timer_screen.dart';
 
 class MainRoute extends StatelessWidget {
   MainRoute({Key? key}) : super(key: key);
-  List<Widget> screens = [];
+  List<Widget> screens = [const TimerScreen()];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text("Study Timer"),
+          title: Text(
+            "Study Timer",
+            style: GoogleFonts.montserrat(fontSize: 20),
+          ),
           leading: Builder(builder: (context) {
             return IconButton(
               onPressed: () {
@@ -28,7 +33,7 @@ class MainRoute extends StatelessWidget {
           ],
         ),
         drawer: _MainRouteDrawer(),
-        body: Container());
+        body: screens[0]);
   }
 }
 
@@ -55,15 +60,15 @@ class _MainRouteDrawer extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(LineIcons.user, size: 120),
+                  Icon(LineIcons.userCircleAlt, size: 100),
                   const SizedBox(height: 50),
-                  timsTextBuilderWithStyle(
-                      text: "Kaka",
-                      textStyle: Theme.of(context).textTheme.headline4!),
+                  timsTextBuilder(
+                      text: "Kaka", textSize: 24, fontWeight: FontWeight.w600),
                   const SizedBox(height: 10),
-                  timsTextBuilderWithStyle(
-                      text: "TIMS Developer",
-                      textStyle: Theme.of(context).textTheme.headline6!),
+                  timsTextBuilder(
+                      text: "Ambition bring success",
+                      textSize: 18,
+                      fontWeight: FontWeight.w400),
                 ],
               ),
             ),
@@ -100,6 +105,54 @@ class _MainRouteDrawer extends StatelessWidget {
                       tileLabel: 'History',
                     ),
                   ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class NavigationDrawerTile extends StatelessWidget {
+  NavigationDrawerTile({Key? key, required this.icon, required this.tileLabel})
+      : super(key: key);
+  IconData icon;
+  String tileLabel;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: drawerTileDarkTheme,
+      borderRadius: BorderRadius.circular(55),
+      child: InkWell(
+        onTap: () {},
+        borderRadius: BorderRadius.circular(55),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Container(
+              height: 50,
+              width: double.infinity,
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(55)),
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              height: 55,
+              width: double.infinity,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                      alignment: Alignment.center, child: Icon(icon, size: 32)),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  timsTextBuilder(text: tileLabel, textSize: 18)
                 ],
               ),
             ),
