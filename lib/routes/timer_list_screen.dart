@@ -18,58 +18,33 @@ class TimerListScreen extends StatelessWidget {
         children: [
           ListView.builder(
               itemBuilder: (context, index) => TimerListTile(), itemCount: 10),
-          TimerListFAB(fabSize: fabSize),
-        ],
-      ),
-    );
-  }
-}
-
-class TimerListFAB extends StatefulWidget {
-  TimerListFAB({
-    Key? key,
-    required this.fabSize,
-  }) : super(key: key);
-
-  final double fabSize;
-  final _TimerListFABState _state = _TimerListFABState();
-
-  @override
-  State<TimerListFAB> createState() => _TimerListFABState();
-}
-
-class _TimerListFABState extends State<TimerListFAB> with AnimationMixin {
-  late Animation fabTranslate;
-
-  @override
-  void initState() {
-    super.initState();
-    fabTranslate = Tween<double>(begin: -10, end: 30)
-        .animate(controller.drive(CurveTween(curve: Curves.easeIn)));
-    controller.play(duration: Duration(milliseconds: 200));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Positioned(
-      right: 30,
-      bottom: fabTranslate.value,
-      child: Material(
-        color: whiteColorDarkTheme,
-        shape: CircleBorder(),
-        child: InkWell(
-          onTap: () {},
-          borderRadius: BorderRadius.circular(widget.fabSize),
-          child: Container(
-            height: widget.fabSize,
-            width: widget.fabSize,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(widget.fabSize),
+          PlayAnimation<double>(
+            tween: Tween<double>(begin: -10, end: 30),
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeIn,
+            builder: (context, child, value) => Positioned(
+              right: 30,
+              bottom: value,
+              child: Material(
+                color: whiteColorDarkTheme,
+                shape: CircleBorder(),
+                child: InkWell(
+                  onTap: () {},
+                  borderRadius: BorderRadius.circular(fabSize),
+                  child: Container(
+                    height: fabSize,
+                    width: fabSize,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(fabSize),
+                    ),
+                    child: Icon(LineIcons.plus,
+                        color: blackColorWhiteTheme, size: fabSize / 2),
+                  ),
+                ),
+              ),
             ),
-            child: Icon(LineIcons.plus,
-                color: blackColorWhiteTheme, size: widget.fabSize / 2),
-          ),
-        ),
+          )
+        ],
       ),
     );
   }
