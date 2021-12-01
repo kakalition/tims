@@ -46,9 +46,11 @@ class MainRoute extends StatelessWidget {
         ],
       ),
       drawer: _MainRouteDrawer(),
-      body: Obx(() => PageStorage(
-          bucket: PageStorageBucket(),
-          child: screens[viewmodel.navigationIndex.value])),
+      body: Obx(
+        () => PageStorage(
+            bucket: PageStorageBucket(),
+            child: screens[viewmodel.navigationIndex.value]),
+      ),
     );
   }
 }
@@ -96,30 +98,26 @@ class _MainRouteDrawer extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 8),
                     child: NavigationDrawerTile(
-                      icon: LineIcons.clock,
-                      tileLabel: 'Timer',
-                    ),
+                        icon: LineIcons.clock, tileLabel: 'Timer', index: 0),
                   ),
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 8),
                     child: NavigationDrawerTile(
-                      icon: LineIcons.flag,
-                      tileLabel: 'Stopwatch',
-                    ),
+                        icon: LineIcons.flag, tileLabel: 'Stopwatch', index: 1),
                   ),
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 8),
                     child: NavigationDrawerTile(
                         icon: LineIcons.list,
                         tileLabel: 'Timer List',
-                        active: true),
+                        index: 2),
                   ),
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 8),
                     child: NavigationDrawerTile(
-                      icon: LineIcons.history,
-                      tileLabel: 'History',
-                    ),
+                        icon: LineIcons.history,
+                        tileLabel: 'History',
+                        index: 3),
                   ),
                 ],
               ),
@@ -136,16 +134,18 @@ class NavigationDrawerTile extends StatelessWidget {
       {Key? key,
       required this.icon,
       required this.tileLabel,
-      this.active = false})
+      required this.index})
       : super(key: key);
   IconData icon;
   String tileLabel;
-  bool active;
+  int index;
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: active ? drawerTileDarkTheme : Colors.transparent,
+      color: index == Get.find<MainVM>().navigationIndex.value
+          ? drawerTileDarkTheme
+          : Colors.transparent,
       borderRadius: BorderRadius.circular(55),
       child: InkWell(
         onTap: () {},
