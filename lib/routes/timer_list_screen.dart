@@ -19,8 +19,8 @@ class TimerListScreen extends StatelessWidget {
           ListView.builder(
               itemBuilder: (context, index) => TimerListTile(), itemCount: 10),
           PlayAnimation<double>(
-            tween: Tween<double>(begin: -10, end: 30),
-            duration: const Duration(milliseconds: 300),
+            tween: Tween<double>(begin: -50, end: 30),
+            duration: const Duration(milliseconds: 600),
             curve: Curves.easeIn,
             builder: (context, child, value) => Positioned(
               right: 30,
