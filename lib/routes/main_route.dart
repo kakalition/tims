@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -48,8 +49,17 @@ class MainRoute extends StatelessWidget {
       drawer: _MainRouteDrawer(),
       body: Obx(
         () => PageStorage(
-            bucket: PageStorageBucket(),
-            child: screens[viewmodel.navigationIndex.value]),
+          bucket: PageStorageBucket(),
+          child: PageTransitionSwitcher(
+            transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
+              return FadeThroughTransition(
+                  animation: primaryAnimation,
+                  secondaryAnimation: secondaryAnimation,
+                  child: child);
+            },
+            child: screens[viewmodel.navigationIndex.value],
+          ),
+        ),
       ),
     );
   }
@@ -148,7 +158,10 @@ class NavigationDrawerTile extends StatelessWidget {
           : Colors.transparent,
       borderRadius: BorderRadius.circular(55),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          Get.find<MainVM>().navigationIndex.value = index;
+          navigator!.pop();
+        },
         borderRadius: BorderRadius.circular(55),
         child: Container(
           alignment: Alignment.centerLeft,

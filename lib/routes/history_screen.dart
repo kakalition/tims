@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 
+import '../constants.dart';
 import '../utils.dart';
 
 class HistoryScreen extends StatelessWidget {
@@ -8,11 +9,14 @@ class HistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemBuilder: (context, index) {
-        return HistoryTile();
-      },
-      itemCount: 10,
+    return Container(
+      color: backgroundDarkTheme,
+      child: ListView.builder(
+        itemBuilder: (context, index) {
+          return HistoryTile();
+        },
+        itemCount: 10,
+      ),
     );
   }
 }
