@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_icons/line_icons.dart';
+
 import 'package:tims/routes/history_screen.dart';
+import 'package:tims/viewmodels/main_viewmodel.dart';
 import 'package:tims/routes/stopwatch_screen.dart';
 import 'package:tims/routes/timer_list_screen.dart';
-
 import '../constants.dart';
 import '../utils.dart';
 import 'timer_screen.dart';
 
 class MainRoute extends StatelessWidget {
   MainRoute({Key? key}) : super(key: key);
-  List<Widget> screens = [
-    const TimerScreen(),
-    const StopwatchScreen(),
-    const TimerListScreen(),
-    const HistoryScreen()
+  List<Widget> screens = const [
+    TimerScreen(key: PageStorageKey('Timer Screen')),
+    StopwatchScreen(key: PageStorageKey('Stopwatch Screen')),
+    TimerListScreen(key: PageStorageKey('Timer List Screen')),
+    HistoryScreen(key: PageStorageKey('History Screen')),
   ];
 
   @override
   Widget build(BuildContext context) {
+    MainVM viewmodel = Get.put(MainVM());
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -43,7 +46,9 @@ class MainRoute extends StatelessWidget {
         ],
       ),
       drawer: _MainRouteDrawer(),
-      body: screens[2],
+      body: Obx(() => PageStorage(
+          bucket: PageStorageBucket(),
+          child: screens[viewmodel.navigationIndex.value])),
     );
   }
 }
