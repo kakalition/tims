@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:simple_animations/simple_animations.dart';
+import 'package:tims/viewmodels/timer_viewmodel.dart';
 
 import '../constants.dart';
 import '../utils.dart';
@@ -11,6 +12,7 @@ class TimerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TimerVM viewmodel = Get.put(TimerVM());
     final double timerCircleSize = getCircleTimerSize(context);
     final double playButtonSize = timerCircleSize / 1.618 / 1.5;
     final double restartButtonSize = playButtonSize / 1.618;
@@ -66,6 +68,7 @@ class PlayPauseButton extends StatefulWidget {
 }
 
 class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
+  TimerVM viewmodel = Get.find<TimerVM>();
   late final double timerCircleSize;
   late final double playButtonSize;
   late final double playIconSize;
@@ -140,6 +143,7 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
             child: InkWell(
               onTap: () {
                 animateButton();
+                viewmodel.toggleTimer();
               },
               borderRadius: BorderRadius.circular(playButtonSize),
               child: Container(
@@ -151,10 +155,14 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
                     playButtonSize,
                   ),
                 ),
-                child: Icon(
-                  Icons.play_arrow,
-                  color: whiteColorDarkTheme,
-                  size: playIconSize,
+                child: Obx(
+                  () => Icon(
+                    viewmodel.isTimerActive.value
+                        ? Icons.pause
+                        : Icons.play_arrow,
+                    color: whiteColorDarkTheme,
+                    size: playIconSize,
+                  ),
                 ),
               ),
             ),
