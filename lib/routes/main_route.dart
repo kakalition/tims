@@ -1,25 +1,29 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_icons/line_icons.dart';
+
 import 'package:tims/routes/history_screen.dart';
+import 'package:tims/viewmodels/main_viewmodel.dart';
 import 'package:tims/routes/stopwatch_screen.dart';
 import 'package:tims/routes/timer_list_screen.dart';
-
 import '../constants.dart';
 import '../utils.dart';
 import 'timer_screen.dart';
 
 class MainRoute extends StatelessWidget {
   MainRoute({Key? key}) : super(key: key);
-  List<Widget> screens = [
-    const TimerScreen(),
-    const StopwatchScreen(),
-    const TimerListScreen(),
-    const HistoryScreen()
+  List<Widget> screens = const [
+    TimerScreen(key: PageStorageKey('Timer Screen')),
+    StopwatchScreen(key: PageStorageKey('Stopwatch Screen')),
+    TimerListScreen(key: PageStorageKey('Timer List Screen')),
+    HistoryScreen(key: PageStorageKey('History Screen')),
   ];
 
   @override
   Widget build(BuildContext context) {
+    MainVM viewmodel = Get.put(MainVM());
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -43,7 +47,20 @@ class MainRoute extends StatelessWidget {
         ],
       ),
       drawer: _MainRouteDrawer(),
-      body: screens[2],
+      body: Obx(
+        () => PageStorage(
+          bucket: PageStorageBucket(),
+          child: PageTransitionSwitcher(
+            transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
+              return FadeThroughTransition(
+                  animation: primaryAnimation,
+                  secondaryAnimation: secondaryAnimation,
+                  child: child);
+            },
+            child: screens[viewmodel.navigationIndex.value],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -91,30 +108,26 @@ class _MainRouteDrawer extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 8),
                     child: NavigationDrawerTile(
-                      icon: LineIcons.clock,
-                      tileLabel: 'Timer',
-                    ),
+                        icon: LineIcons.clock, tileLabel: 'Timer', index: 0),
                   ),
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 8),
                     child: NavigationDrawerTile(
-                      icon: LineIcons.flag,
-                      tileLabel: 'Stopwatch',
-                    ),
+                        icon: LineIcons.flag, tileLabel: 'Stopwatch', index: 1),
                   ),
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 8),
                     child: NavigationDrawerTile(
                         icon: LineIcons.list,
                         tileLabel: 'Timer List',
-                        active: true),
+                        index: 2),
                   ),
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 8),
                     child: NavigationDrawerTile(
-                      icon: LineIcons.history,
-                      tileLabel: 'History',
-                    ),
+                        icon: LineIcons.history,
+                        tileLabel: 'History',
+                        index: 3),
                   ),
                 ],
               ),
@@ -131,19 +144,24 @@ class NavigationDrawerTile extends StatelessWidget {
       {Key? key,
       required this.icon,
       required this.tileLabel,
-      this.active = false})
+      required this.index})
       : super(key: key);
   IconData icon;
   String tileLabel;
-  bool active;
+  int index;
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: active ? drawerTileDarkTheme : Colors.transparent,
+      color: index == Get.find<MainVM>().navigationIndex.value
+          ? drawerTileDarkTheme
+          : Colors.transparent,
       borderRadius: BorderRadius.circular(55),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          Get.find<MainVM>().navigationIndex.value = index;
+          navigator!.pop();
+        },
         borderRadius: BorderRadius.circular(55),
         child: Container(
           alignment: Alignment.centerLeft,

@@ -10,33 +10,36 @@ class TimerListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double fabSize = MediaQuery.of(context).size.width * 0.12;
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        ListView.builder(
-            itemBuilder: (context, index) => TimerListTile(), itemCount: 10),
-        Positioned(
-          right: 30,
-          bottom: 30,
-          child: Material(
-            color: whiteColorDarkTheme,
-            shape: CircleBorder(),
-            child: InkWell(
-              onTap: () {},
-              borderRadius: BorderRadius.circular(fabSize),
-              child: Container(
-                height: fabSize,
-                width: fabSize,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(fabSize),
+    return Container(
+      color: backgroundDarkTheme,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          ListView.builder(
+              itemBuilder: (context, index) => TimerListTile(), itemCount: 10),
+          Positioned(
+            right: 30,
+            bottom: 30,
+            child: Material(
+              color: whiteColorDarkTheme,
+              shape: CircleBorder(),
+              child: InkWell(
+                onTap: () {},
+                borderRadius: BorderRadius.circular(fabSize),
+                child: Container(
+                  height: fabSize,
+                  width: fabSize,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(fabSize),
+                  ),
+                  child: Icon(LineIcons.plus,
+                      color: blackColorWhiteTheme, size: fabSize / 2),
                 ),
-                child: Icon(LineIcons.plus,
-                    color: blackColorWhiteTheme, size: fabSize / 2),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
