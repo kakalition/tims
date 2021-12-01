@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:simple_animations/simple_animations.dart';
 
 import '../constants.dart';
 import '../utils.dart';
@@ -43,62 +44,123 @@ class TimerScreen extends StatelessWidget {
               height: 30,
             ),
 
-            // Play/Stop Button
-            Material(
-              borderRadius: BorderRadius.circular(playButtonSize),
-              child: InkWell(
-                onTap: () {},
-                borderRadius: BorderRadius.circular(playButtonSize),
-                child: Container(
-                  height: playButtonSize,
-                  width: playButtonSize,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 5, color: whiteColorDarkTheme),
-                    borderRadius: BorderRadius.circular(
-                      playButtonSize,
-                    ),
-                  ),
-                  child: Icon(
-                    LineIcons.play,
-                    color: whiteColorDarkTheme,
-                    size: playIconSize,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
+            const PlayPauseButton(),
 
-            // Restart Button
-            Material(
-              borderRadius: BorderRadius.circular(restartButtonSize),
-              child: InkWell(
-                onTap: () {},
-                borderRadius: BorderRadius.circular(restartButtonSize),
-                child: Container(
-                  height: restartButtonSize,
-                  width: restartButtonSize,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 5, color: whiteColorDarkTheme),
-                    borderRadius: BorderRadius.circular(
-                      restartButtonSize,
-                    ),
-                  ),
-                  child: Icon(
-                    Icons.replay,
-                    color: whiteColorDarkTheme,
-                    size: restartIconSize,
-                  ),
-                ),
-              ),
-            ),
             const SizedBox(
               height: 80,
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class PlayPauseButton extends StatefulWidget {
+  const PlayPauseButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<PlayPauseButton> createState() => _PlayPauseButtonState();
+}
+
+class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
+  late final double timerCircleSize;
+  late final double playButtonSize;
+  late final double playIconSize;
+  late final double restartButtonSize;
+  late final double restartIconSize;
+
+  late AnimationController revealController;
+  late Animation buttonAnimation;
+  late Animation revealAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    revealController = createController();
+  }
+
+  @override
+  void didChangeDependencies() {
+    timerCircleSize = getCircleTimerSize(context);
+    playButtonSize = timerCircleSize / 1.618 / 1.5;
+    playIconSize = playButtonSize * 0.5;
+    restartButtonSize = playButtonSize / 1.618;
+    restartIconSize = restartButtonSize * 0.4;
+    buttonAnimation = Tween<double>(begin: 1, end: 1.05).animate(controller);
+    revealAnimation = Tween<Offset>(begin: Offset.zero, end: Offset(0, 130))
+        .animate(revealController.drive(CurveTween(curve: Curves.easeIn)));
+    super.didChangeDependencies();
+  }
+
+  void animateButton() async {
+    await controller.play(duration: const Duration(milliseconds: 100));
+    revealController.play(duration: const Duration(milliseconds: 150));
+    await controller.playReverse(duration: const Duration(milliseconds: 100));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        // Restart Button
+        Transform.translate(
+          offset: revealAnimation.value,
+          child: Material(
+            borderRadius: BorderRadius.circular(restartButtonSize),
+            child: InkWell(
+              onTap: () {},
+              borderRadius: BorderRadius.circular(restartButtonSize),
+              child: Container(
+                height: restartButtonSize,
+                width: restartButtonSize,
+                decoration: BoxDecoration(
+                  border: Border.all(width: 5, color: whiteColorDarkTheme),
+                  borderRadius: BorderRadius.circular(
+                    restartButtonSize,
+                  ),
+                ),
+                child: Icon(
+                  Icons.replay,
+                  color: whiteColorDarkTheme,
+                  size: restartIconSize,
+                ),
+              ),
+            ),
+          ),
+        ),
+        // Play/Stop Button
+        Transform.scale(
+          scale: buttonAnimation.value,
+          child: Material(
+            borderRadius: BorderRadius.circular(playButtonSize),
+            child: InkWell(
+              onTap: () {
+                animateButton();
+              },
+              borderRadius: BorderRadius.circular(playButtonSize),
+              child: Container(
+                height: playButtonSize,
+                width: playButtonSize,
+                decoration: BoxDecoration(
+                  border: Border.all(width: 5, color: whiteColorDarkTheme),
+                  borderRadius: BorderRadius.circular(
+                    playButtonSize,
+                  ),
+                ),
+                child: Icon(
+                  Icons.play_arrow,
+                  color: whiteColorDarkTheme,
+                  size: playIconSize,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
