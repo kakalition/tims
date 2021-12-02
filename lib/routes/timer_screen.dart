@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_animations/simple_animations.dart';
+import 'package:tims/enum/playpause_button_state.dart';
 import 'package:tims/viewmodels/timer_viewmodel.dart';
 
 import '../constants.dart';
@@ -97,9 +98,8 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
     playIconSize = playButtonSize * 0.5;
     restartButtonSize = playButtonSize / 1.618;
     restartIconSize = restartButtonSize * 0.4;
-    buttonAnimation = Tween<double>(begin: 1, end: 1.05)
-        .animate(playPauseButtonController)
-        .drive(CurveTween(curve: Curves.easeOut));
+    buttonAnimation =
+        Tween<double>(begin: 1, end: 1.05).animate(playPauseButtonController);
     iconButtonAnimation = Tween<double>(begin: 0, end: 1)
         .animate(playPauseIconController)
         .drive(CurveTween(curve: Curves.easeOut));
@@ -108,10 +108,27 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
     super.didChangeDependencies();
   }
 
-  void animateButton() async {
-    await controller.play(duration: const Duration(milliseconds: 150));
-    revealController.play(duration: const Duration(milliseconds: 300));
-    await controller.playReverse(duration: const Duration(milliseconds: 150));
+  void animateButton(PlayPauseButtonState state) async {
+    if (state == PlayPauseButtonState.tap) {
+      await playPauseButtonController.play(
+          duration: const Duration(milliseconds: 150));
+      if (playPauseIconController.isCompleted) {
+        playPauseIconController.playReverse(
+            duration: const Duration(milliseconds: 150));
+      } else if (playPauseIconController.isDismissed) {
+        playPauseIconController.play(
+            duration: const Duration(milliseconds: 150));
+      }
+      revealController.play(duration: const Duration(milliseconds: 300));
+      await playPauseButtonController.playReverse(
+          duration: const Duration(milliseconds: 150));
+    } else if (state == PlayPauseButtonState.hold) {
+      await playPauseButtonController.play(
+          duration: const Duration(milliseconds: 150));
+    } else if (state == PlayPauseButtonState.cancel) {
+      await playPauseButtonController.playReverse(
+          duration: const Duration(milliseconds: 150));
+    }
   }
 
   @override
@@ -152,8 +169,14 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
             borderRadius: BorderRadius.circular(playButtonSize),
             child: InkWell(
               onTap: () {
-                animateButton();
+                animateButton(PlayPauseButtonState.tap);
                 viewmodel.toggleTimer();
+              },
+              onTapDown: (TapDownDetails details) {
+                animateButton(PlayPauseButtonState.hold);
+              },
+              onTapCancel: () {
+                animateButton(PlayPauseButtonState.cancel);
               },
               borderRadius: BorderRadius.circular(playButtonSize),
               child: Container(
@@ -168,7 +191,7 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
                 child: Center(
                   child: AnimatedIcon(
                     icon: AnimatedIcons.play_pause,
-                    progress: controller,
+                    progress: playPauseIconController,
                     color: whiteColorDarkTheme,
                     size: playIconSize,
                   ),
