@@ -109,9 +109,9 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
   }
 
   void animateButton() async {
-    await controller.play(duration: const Duration(milliseconds: 100));
-    revealController.play(duration: const Duration(milliseconds: 350));
-    await controller.playReverse(duration: const Duration(milliseconds: 100));
+    await controller.play(duration: const Duration(milliseconds: 150));
+    revealController.play(duration: const Duration(milliseconds: 300));
+    await controller.playReverse(duration: const Duration(milliseconds: 150));
   }
 
   @override
