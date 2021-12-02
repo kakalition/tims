@@ -75,13 +75,18 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
   late final double restartButtonSize;
   late final double restartIconSize;
 
+  late AnimationController playPauseButtonController;
+  late AnimationController playPauseIconController;
   late AnimationController revealController;
   late Animation buttonAnimation;
+  late Animation iconButtonAnimation;
   late Animation revealAnimation;
 
   @override
   void initState() {
     super.initState();
+    playPauseButtonController = createController();
+    playPauseIconController = createController();
     revealController = createController();
   }
 
@@ -92,9 +97,14 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
     playIconSize = playButtonSize * 0.5;
     restartButtonSize = playButtonSize / 1.618;
     restartIconSize = restartButtonSize * 0.4;
-    buttonAnimation = Tween<double>(begin: 1, end: 1.05).animate(controller);
+    buttonAnimation = Tween<double>(begin: 1, end: 1.05)
+        .animate(playPauseButtonController)
+        .drive(CurveTween(curve: Curves.easeOut));
+    iconButtonAnimation = Tween<double>(begin: 0, end: 1)
+        .animate(playPauseIconController)
+        .drive(CurveTween(curve: Curves.easeOut));
     revealAnimation = Tween<Offset>(begin: Offset.zero, end: Offset(0, 130))
-        .animate(revealController.drive(CurveTween(curve: Curves.easeIn)));
+        .animate(revealController.drive(CurveTween(curve: Curves.easeOut)));
     super.didChangeDependencies();
   }
 
@@ -155,11 +165,10 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
                     playButtonSize,
                   ),
                 ),
-                child: Obx(
-                  () => Icon(
-                    viewmodel.isTimerActive.value
-                        ? Icons.pause
-                        : Icons.play_arrow,
+                child: Center(
+                  child: AnimatedIcon(
+                    icon: AnimatedIcons.play_pause,
+                    progress: controller,
                     color: whiteColorDarkTheme,
                     size: playIconSize,
                   ),
