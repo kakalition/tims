@@ -10,7 +10,7 @@ class TimerListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double fabSize = MediaQuery.of(context).size.width * 0.12;
+    const double fabSize = 56;
     return Container(
       color: backgroundDarkTheme,
       child: Stack(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_animations/simple_animations.dart';
@@ -39,15 +40,14 @@ class TimerScreen extends StatelessWidget {
                     timerCircleSize,
                   ),
                 ),
-                child: Text(
-                  "00:24:00",
-                  style: GoogleFonts.montserrat(fontSize: 34),
-                )),
+                child: TimerText()),
             const SizedBox(
               height: 30,
             ),
 
-            const PlayPauseButton(),
+            Container(
+                height: MediaQuery.of(context).size.height * 0.27,
+                child: const PlayPauseButton()),
 
             const SizedBox(
               height: 80,
@@ -79,9 +79,11 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
   late AnimationController playPauseButtonController;
   late AnimationController playPauseIconController;
   late AnimationController revealController;
+  late AnimationController timeController;
   late Animation buttonAnimation;
   late Animation iconButtonAnimation;
   late Animation revealAnimation;
+  late Animation timeAnimation;
 
   @override
   void initState() {
@@ -89,6 +91,7 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
     playPauseButtonController = createController();
     playPauseIconController = createController();
     revealController = createController();
+    timeController = viewmodel.getTimeController();
   }
 
   @override
@@ -103,13 +106,21 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
     iconButtonAnimation = Tween<double>(begin: 0, end: 1)
         .animate(playPauseIconController)
         .drive(CurveTween(curve: Curves.easeOut));
-    revealAnimation = Tween<Offset>(begin: Offset.zero, end: Offset(0, 130))
+    revealAnimation = Tween<Offset>(begin: Offset.zero, end: Offset(0, 160))
         .animate(revealController.drive(CurveTween(curve: Curves.easeOut)));
+    timeAnimation = viewmodel.getTimerTween().animate(timeController);
+    timeController.duration = viewmodel.currentTimerDuration;
     super.didChangeDependencies();
   }
 
   void animateButton(PlayPauseButtonState state) async {
     if (state == PlayPauseButtonState.tap) {
+      viewmodel.toggleTimer();
+      if (viewmodel.isTimerActive.value) {
+        timeController.forward();
+      } else {
+        timeController.stop();
+      }
       await playPauseButtonController.play(
           duration: const Duration(milliseconds: 150));
       if (playPauseIconController.isCompleted) {
@@ -134,7 +145,7 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      alignment: Alignment.center,
+      alignment: Alignment.topCenter,
       children: [
         // Restart Button
         Transform.translate(
@@ -142,13 +153,19 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
           child: Material(
             borderRadius: BorderRadius.circular(restartButtonSize),
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                timeController.reset();
+                viewmodel.turnOffTimer();
+                playPauseIconController.playReverse();
+                revealController.playReverse(
+                    duration: const Duration(milliseconds: 300));
+              },
               borderRadius: BorderRadius.circular(restartButtonSize),
               child: Container(
                 height: restartButtonSize,
                 width: restartButtonSize,
                 decoration: BoxDecoration(
-                  border: Border.all(width: 5, color: whiteColorDarkTheme),
+                  border: Border.all(width: 3, color: whiteColorDarkTheme),
                   borderRadius: BorderRadius.circular(
                     restartButtonSize,
                   ),
@@ -170,7 +187,6 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
             child: InkWell(
               onTap: () {
                 animateButton(PlayPauseButtonState.tap);
-                viewmodel.toggleTimer();
               },
               onTapDown: (TapDownDetails details) {
                 animateButton(PlayPauseButtonState.hold);
@@ -202,5 +218,31 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
         ),
       ],
     );
+  }
+}
+
+class TimerText extends StatefulWidget {
+  const TimerText({Key? key}) : super(key: key);
+
+  @override
+  State<TimerText> createState() => _TimerTextState();
+}
+
+class _TimerTextState extends State<TimerText> with AnimationMixin {
+  TimerVM viewmodel = Get.find<TimerVM>();
+
+  @override
+  void initState() {
+    super.initState();
+    viewmodel.setTimeController(controller);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return timsTextBuilder(
+        text: viewmodel.formattedTimerString(
+            viewmodel.getTimerTween().animate(controller)),
+        textSize: 38,
+        fontWeight: FontWeight.w400);
   }
 }
