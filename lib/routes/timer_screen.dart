@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -15,6 +17,7 @@ class TimerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TimerVM viewmodel = Get.put(TimerVM());
+    PlayPauseButton playPauseButton = PlayPauseButton();
     final double timerCircleSize = getCircleTimerSize(context);
     final double playButtonSize = timerCircleSize / 1.618 / 1.5;
     final double restartButtonSize = playButtonSize / 1.618;
@@ -30,30 +33,84 @@ class TimerScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           children: [
             // Time Circle
-            Container(
-                alignment: Alignment.center,
-                height: timerCircleSize,
-                width: timerCircleSize,
-                decoration: BoxDecoration(
-                  border: Border.all(width: 12, color: whiteColorDarkTheme),
-                  borderRadius: BorderRadius.circular(
-                    timerCircleSize,
-                  ),
-                ),
-                child: TimerText()),
+            // Container(
+            //   alignment: Alignment.center,
+            //   height: timerCircleSize,
+            //   width: timerCircleSize,
+            //   decoration: BoxDecoration(
+            //     border: Border.all(width: 12, color: whiteColorDarkTheme),
+            //     borderRadius: BorderRadius.circular(
+            //       timerCircleSize,
+            //     ),
+            //   ),
+            //   child: TimerText(),
+            // ),
+            TimeCircle(),
             const SizedBox(
               height: 30,
             ),
-
             Container(
                 height: MediaQuery.of(context).size.height * 0.27,
-                child: const PlayPauseButton()),
-
+                child: PlayPauseButton()),
             const SizedBox(
               height: 80,
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class TimeCircle extends StatefulWidget {
+  const TimeCircle({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<TimeCircle> createState() => _TimeCircleState();
+}
+
+class _TimeCircleState extends State<TimeCircle> with AnimationMixin {
+  TimerVM viewmodel = Get.find<TimerVM>();
+  late Animation circleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    viewmodel.setTimeController(controller);
+    circleAnimation =
+        Tween<double>(begin: 1, end: 0).animate(viewmodel.getTimeController());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.width * 0.7,
+      width: MediaQuery.of(context).size.width * 0.7,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Stack(
+            children: [
+              Transform.scale(
+                  scale: 7,
+                  child: CircularProgressIndicator(
+                      color: Color(0xFF212121), strokeWidth: 2, value: 1)),
+              Transform.scale(
+                  scale: 7,
+                  child: CircularProgressIndicator(
+                      color: whiteColorDarkTheme,
+                      strokeWidth: 2,
+                      value: circleAnimation.value))
+            ],
+          ),
+          timsTextBuilder(
+              text: viewmodel.formattedTimerString(
+                  viewmodel.getTimerTween().animate(controller)),
+              textSize: 38,
+              fontWeight: FontWeight.w400),
+        ],
       ),
     );
   }
@@ -110,6 +167,7 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
         .animate(revealController.drive(CurveTween(curve: Curves.easeOut)));
     timeAnimation = viewmodel.getTimerTween().animate(timeController);
     timeController.duration = viewmodel.currentTimerDuration;
+
     super.didChangeDependencies();
   }
 
@@ -218,31 +276,5 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
         ),
       ],
     );
-  }
-}
-
-class TimerText extends StatefulWidget {
-  const TimerText({Key? key}) : super(key: key);
-
-  @override
-  State<TimerText> createState() => _TimerTextState();
-}
-
-class _TimerTextState extends State<TimerText> with AnimationMixin {
-  TimerVM viewmodel = Get.find<TimerVM>();
-
-  @override
-  void initState() {
-    super.initState();
-    viewmodel.setTimeController(controller);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return timsTextBuilder(
-        text: viewmodel.formattedTimerString(
-            viewmodel.getTimerTween().animate(controller)),
-        textSize: 38,
-        fontWeight: FontWeight.w400);
   }
 }
