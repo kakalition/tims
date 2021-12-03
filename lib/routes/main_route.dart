@@ -8,6 +8,7 @@ import 'package:tims/routes/history_screen.dart';
 import 'package:tims/viewmodels/main_viewmodel.dart';
 import 'package:tims/routes/stopwatch_screen.dart';
 import 'package:tims/routes/timer_list_screen.dart';
+import 'package:tims/viewmodels/stopwatch_viewmodel.dart';
 import '../constants.dart';
 import '../utils.dart';
 import 'timer_screen.dart';
@@ -24,6 +25,7 @@ class MainRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     MainVM viewmodel = Get.put(MainVM());
+    Get.put(StopwatchVM());
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,

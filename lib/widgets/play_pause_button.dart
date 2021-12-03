@@ -2,22 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:simple_animations/simple_animations.dart';
 import 'package:tims/enum/playpause_button_state.dart';
+import 'package:tims/enum/viewmodel_source.dart';
+import 'package:tims/viewmodels/main_viewmodel.dart';
+import 'package:tims/viewmodels/stopwatch_viewmodel.dart';
 import 'package:tims/viewmodels/timer_viewmodel.dart';
 
 import '../constants.dart';
 import '../utils.dart';
 
 class PlayPauseButton extends StatefulWidget {
-  const PlayPauseButton({
-    Key? key,
-  }) : super(key: key);
+  PlayPauseButton({Key? key, required this.source}) : super(key: key);
+  ViewmodelSource source;
 
   @override
   State<PlayPauseButton> createState() => _PlayPauseButtonState();
 }
 
 class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
-  TimerVM viewmodel = Get.find<TimerVM>();
+  dynamic viewmodel;
   late final double timerCircleSize;
   late final double playButtonSize;
   late final double playIconSize;
@@ -39,6 +41,12 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
     playPauseButtonController = createController();
     playPauseIconController = createController();
     revealController = createController();
+    if (widget.source == ViewmodelSource.timer) {
+      viewmodel = Get.find<TimerVM>();
+      debugPrint(viewmodel.toString());
+    } else if (widget.source == ViewmodelSource.stopwatch) {
+      viewmodel = Get.find<StopwatchVM>();
+    }
     timeController = viewmodel.getTimeController();
   }
 
@@ -56,8 +64,14 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
         .drive(CurveTween(curve: Curves.easeOut));
     revealAnimation = Tween<Offset>(begin: Offset.zero, end: Offset(0, 160))
         .animate(revealController.drive(CurveTween(curve: Curves.easeOut)));
-    timeAnimation = viewmodel.getTimerTween().animate(timeController);
-    timeController.duration = viewmodel.currentTimerDuration;
+    if (widget.source == ViewmodelSource.timer) {
+      timeAnimation = viewmodel.getTimerTween().animate(timeController);
+    }
+    if (widget.source == ViewmodelSource.timer) {
+      timeController.duration = viewmodel.currentTimerDuration;
+    } else if (widget.source == ViewmodelSource.stopwatch) {
+      timeController.duration = Duration(milliseconds: 1500);
+    }
 
     super.didChangeDependencies();
   }
@@ -66,7 +80,11 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
     if (state == PlayPauseButtonState.tap) {
       viewmodel.toggleTimer();
       if (viewmodel.isTimerActive.value) {
-        timeController.forward();
+        if (widget.source == ViewmodelSource.timer) {
+          timeController.forward();
+        } else if (widget.source == ViewmodelSource.stopwatch) {
+          timeController.repeat();
+        }
       } else {
         timeController.stop();
       }

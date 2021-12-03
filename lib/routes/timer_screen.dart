@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_animations/simple_animations.dart';
 import 'package:tims/enum/playpause_button_state.dart';
+import 'package:tims/enum/viewmodel_source.dart';
 import 'package:tims/viewmodels/timer_viewmodel.dart';
 import 'package:tims/widgets/play_pause_button.dart';
 
@@ -18,7 +19,6 @@ class TimerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TimerVM viewmodel = Get.put(TimerVM());
-    PlayPauseButton playPauseButton = PlayPauseButton();
     final double timerCircleSize = getCircleTimerSize(context);
     final double playButtonSize = timerCircleSize / 1.618 / 1.5;
     final double restartButtonSize = playButtonSize / 1.618;
@@ -33,26 +33,13 @@ class TimerScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
           children: [
-            // Time Circle
-            // Container(
-            //   alignment: Alignment.center,
-            //   height: timerCircleSize,
-            //   width: timerCircleSize,
-            //   decoration: BoxDecoration(
-            //     border: Border.all(width: 12, color: whiteColorDarkTheme),
-            //     borderRadius: BorderRadius.circular(
-            //       timerCircleSize,
-            //     ),
-            //   ),
-            //   child: TimerText(),
-            // ),
             TimeCircle(),
             const SizedBox(
               height: 30,
             ),
             Container(
                 height: MediaQuery.of(context).size.height * 0.27,
-                child: PlayPauseButton()),
+                child: PlayPauseButton(source: ViewmodelSource.timer)),
             const SizedBox(
               height: 80,
             ),
