@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:simple_animations/simple_animations.dart';
+import 'package:tims/widgets/play_pause_button.dart';
+import 'dart:math' as math;
 
 import '../constants.dart';
 import '../utils.dart';
@@ -25,97 +28,78 @@ class StopwatchScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           children: [
             // Time Circle
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                Container(
-                  alignment: Alignment.center,
-                  height: timerCircleSize,
-                  width: timerCircleSize,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 12, color: Color(0xFF212121)),
-                    borderRadius: BorderRadius.circular(
-                      timerCircleSize,
-                    ),
-                  ),
-                  child: Text(
-                    "00:00:00",
-                    style: GoogleFonts.montserrat(fontSize: 34),
-                  ),
-                ),
-                Positioned(
-                  top: 0,
-                  child: Container(
-                    height: 12,
-                    width: 12,
-                    decoration: BoxDecoration(
-                      color: whiteColorDarkTheme,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            StopwatchCircle(timerCircleSize: timerCircleSize),
             const SizedBox(
               height: 30,
             ),
-
             // Play/Stop Button
-            Material(
-              borderRadius: BorderRadius.circular(playButtonSize),
-              child: InkWell(
-                onTap: () {},
-                borderRadius: BorderRadius.circular(playButtonSize),
-                child: Container(
-                  height: playButtonSize,
-                  width: playButtonSize,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 5, color: whiteColorDarkTheme),
-                    borderRadius: BorderRadius.circular(
-                      playButtonSize,
-                    ),
-                  ),
-                  child: Icon(
-                    LineIcons.play,
-                    color: whiteColorDarkTheme,
-                    size: playIconSize,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-
-            // Restart Button
-            Material(
-              borderRadius: BorderRadius.circular(restartButtonSize),
-              child: InkWell(
-                onTap: () {},
-                borderRadius: BorderRadius.circular(restartButtonSize),
-                child: Container(
-                  height: restartButtonSize,
-                  width: restartButtonSize,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 5, color: whiteColorDarkTheme),
-                    borderRadius: BorderRadius.circular(
-                      restartButtonSize,
-                    ),
-                  ),
-                  child: Icon(
-                    Icons.replay,
-                    color: whiteColorDarkTheme,
-                    size: restartIconSize,
-                  ),
-                ),
-              ),
-            ),
+            Container(
+                height: MediaQuery.of(context).size.height * 0.27,
+                child: PlayPauseButton()),
             const SizedBox(
               height: 80,
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class StopwatchCircle extends StatefulWidget {
+  const StopwatchCircle({
+    Key? key,
+    required this.timerCircleSize,
+  }) : super(key: key);
+
+  final double timerCircleSize;
+
+  @override
+  State<StopwatchCircle> createState() => _StopwatchCircleState();
+}
+
+class _StopwatchCircleState extends State<StopwatchCircle> with AnimationMixin {
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Container(
+          alignment: Alignment.center,
+          height: widget.timerCircleSize,
+          width: widget.timerCircleSize,
+          decoration: BoxDecoration(
+            border: Border.all(width: 16, color: Color(0xFF212121)),
+            borderRadius: BorderRadius.circular(
+              widget.timerCircleSize,
+            ),
+          ),
+          child: Text(
+            "00:00:00",
+            style: GoogleFonts.montserrat(fontSize: 34),
+          ),
+        ),
+        LoopAnimation<double>(
+          tween: Tween<double>(begin: 0, end: 2),
+          duration: Duration(seconds: 1),
+          builder: (context, child, value) {
+            return Transform.rotate(angle: math.pi * value, child: child);
+          },
+          child: Container(
+            height: widget.timerCircleSize,
+            width: widget.timerCircleSize,
+            alignment: Alignment.topCenter,
+            child: Container(
+              height: 16,
+              width: 16,
+              decoration: BoxDecoration(
+                color: whiteColorDarkTheme,
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
