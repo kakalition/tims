@@ -20,3 +20,6 @@ Widget timsTextBuilder(
 
 double getCircleTimerSize(BuildContext context) =>
     MediaQuery.of(context).size.width * 0.62;
+
+double getCircleClockSize(BuildContext context) =>
+    MediaQuery.of(context).size.width * 0.5;

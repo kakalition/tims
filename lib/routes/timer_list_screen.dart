@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:simple_animations/simple_animations.dart';
 
@@ -19,17 +20,18 @@ class TimerListScreen extends StatelessWidget {
           ListView.builder(
               itemBuilder: (context, index) => TimerListTile(), itemCount: 10),
           PlayAnimation<double>(
-            tween: Tween<double>(begin: -50, end: 30),
+            tween: Tween<double>(begin: -50, end: 60),
             duration: const Duration(milliseconds: 400),
             curve: Curves.easeOut,
             builder: (context, child, value) => Positioned(
-              right: 30,
               bottom: value,
               child: Material(
                 color: whiteColorDarkTheme,
                 shape: CircleBorder(),
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    navigator!.pushNamed('/addtimer');
+                  },
                   borderRadius: BorderRadius.circular(fabSize),
                   child: Container(
                     height: fabSize,
