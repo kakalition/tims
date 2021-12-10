@@ -108,24 +108,24 @@ class _MainRouteDrawer extends StatelessWidget {
               child: ListView(
                 children: [
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 8),
+                    margin: EdgeInsets.symmetric(vertical: 3),
                     child: NavigationDrawerTile(
                         icon: LineIcons.clock, tileLabel: 'Timer', index: 0),
                   ),
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 8),
+                    margin: EdgeInsets.symmetric(vertical: 3),
                     child: NavigationDrawerTile(
                         icon: LineIcons.flag, tileLabel: 'Stopwatch', index: 1),
                   ),
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 8),
+                    margin: EdgeInsets.symmetric(vertical: 3),
                     child: NavigationDrawerTile(
                         icon: LineIcons.list,
                         tileLabel: 'Timer List',
                         index: 2),
                   ),
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 8),
+                    margin: EdgeInsets.symmetric(vertical: 3),
                     child: NavigationDrawerTile(
                         icon: LineIcons.history,
                         tileLabel: 'History',

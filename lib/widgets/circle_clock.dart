@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:tims/viewmodels/add_timer_viewmodel.dart';
 
 import '../constants.dart';
 import '../utils.dart';
 
 class CircleClock extends StatelessWidget {
-  CircleClock({Key? key, required this.timeDigit}) : super(key: key);
-  List<int> timeDigit;
+  CircleClock({Key? key, required this.viewmodel}) : super(key: key);
+  AddTimerVM viewmodel;
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +22,13 @@ class CircleClock extends StatelessWidget {
         ),
       ),
       child: Center(
-        child: timsTextBuilder(
-            text: "00:00", textSize: 48, color: blackColorWhiteTheme),
-      ),
+          child: Obx(
+        () => timsTextBuilder(
+            text:
+                '${viewmodel.timeDigit[0]}${viewmodel.timeDigit[1]}:${viewmodel.timeDigit[2]}${viewmodel.timeDigit[3]}',
+            textSize: 32,
+            color: Colors.black),
+      )),
     );
   }
 }

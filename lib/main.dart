@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
           ),
           GetPage(
             name: '/addnormaltimer',
-            page: () => const AddNormalTimer(),
+            page: () => AddNormalTimer(),
             transition: Transition.fadeIn,
             transitionDuration: const Duration(milliseconds: 150),
           ),
