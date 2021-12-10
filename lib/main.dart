@@ -19,36 +19,35 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData.dark().copyWith(
-          scaffoldBackgroundColor: blackColorWhiteTheme,
-          appBarTheme: AppBarTheme().copyWith(color: blackColorWhiteTheme),
-          canvasColor: drawerColorDarkTheme),
-      getPages: [
-        GetPage(
-          name: '/',
-          page: () => const SplashRoute(),
-        ),
-        GetPage(
-          name: '/main',
-          page: () => MainRoute(),
-          transition: Transition.fadeIn,
-          transitionDuration: const Duration(milliseconds: 150),
-        ),
-        GetPage(
-          name: '/addtimer',
-          page: () => const AddTimerRoute(),
-          transition: Transition.fadeIn,
-          transitionDuration: const Duration(milliseconds: 150),
-        ),
-        GetPage(
-          name: '/addnormaltimer',
-          page: () => const AddNormalTimer(),
-          transition: Transition.fadeIn,
-          transitionDuration: const Duration(milliseconds: 150),
-        ),
-      ],
-      initialRoute: '/',
-    );
+        title: 'Flutter Demo',
+        theme: ThemeData.dark().copyWith(
+            scaffoldBackgroundColor: blackColorWhiteTheme,
+            appBarTheme: AppBarTheme().copyWith(color: blackColorWhiteTheme),
+            canvasColor: drawerColorDarkTheme),
+        getPages: [
+          GetPage(
+            name: '/',
+            page: () => const SplashRoute(),
+          ),
+          GetPage(
+            name: '/main',
+            page: () => MainRoute(),
+            transition: Transition.fadeIn,
+            transitionDuration: const Duration(milliseconds: 150),
+          ),
+          GetPage(
+            name: '/addtimer',
+            page: () => const AddTimerRoute(),
+            transition: Transition.fadeIn,
+            transitionDuration: const Duration(milliseconds: 150),
+          ),
+          GetPage(
+            name: '/addnormaltimer',
+            page: () => const AddNormalTimer(),
+            transition: Transition.fadeIn,
+            transitionDuration: const Duration(milliseconds: 150),
+          ),
+        ],
+        initialRoute: '/');
   }
 }

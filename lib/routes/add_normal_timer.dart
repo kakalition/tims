@@ -62,6 +62,6 @@ class AddNormalTimer extends StatelessWidget {
               SizedBox(height: MediaQuery.of(context).size.width * 0.05),
             ],
           ),
-        ));
+        ),);
   }
 }

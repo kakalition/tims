@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 
 import '../utils.dart';
+import '../constants.dart';
 
 class ClockInput extends StatelessWidget {
   ClockInput({Key? key, required this.timeDigit}) : super(key: key);
@@ -58,11 +59,11 @@ class ClockInput extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            DigitPiece(icon: LineIcons.backspace),
+            DigitPiece(icon: LineIcons.backspace, color: whiteColorDarkTheme),
             SizedBox(width: MediaQuery.of(context).size.width * 0.02),
             DigitPiece(digit: '0'),
             SizedBox(width: MediaQuery.of(context).size.width * 0.02),
-            DigitPiece(icon: LineIcons.check)
+            DigitPiece(icon: LineIcons.check, color: whiteColorDarkTheme)
           ],
         )
       ],
@@ -71,9 +72,12 @@ class ClockInput extends StatelessWidget {
 }
 
 class DigitPiece extends StatelessWidget {
-  DigitPiece({Key? key, this.digit, this.icon}) : super(key: key);
+  DigitPiece(
+      {Key? key, this.digit, this.icon, this.color = blackColorWhiteTheme})
+      : super(key: key);
   String? digit;
   IconData? icon;
+  Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +85,7 @@ class DigitPiece extends StatelessWidget {
       height: MediaQuery.of(context).size.width * 0.17,
       width: MediaQuery.of(context).size.width * 0.17,
       decoration: BoxDecoration(
-        color: Color(0xFF343434),
+        color: color,
         borderRadius: BorderRadius.circular(
           MediaQuery.of(context).size.width * 0.17,
         ),
@@ -89,7 +93,7 @@ class DigitPiece extends StatelessWidget {
       child: icon == null
           ? Center(child: timsTextBuilder(text: digit!, textSize: 28))
           : Center(
-              child: Icon(icon, size: 42),
+              child: Icon(icon, size: 42, color: blackColorWhiteTheme),
             ),
     );
   }
