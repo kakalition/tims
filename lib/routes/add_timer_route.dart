@@ -80,7 +80,9 @@ class AddTimerRoute extends StatelessWidget {
                   color: const Color(0xFF434343),
                   child: InkWell(
                     borderRadius: BorderRadius.circular(20),
-                    onTap: () {},
+                    onTap: () {
+                      navigator!.pushNamed('addintervaltimer');
+                    },
                     child: Container(
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(

@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:simple_animations/simple_animations.dart';
+import 'package:tims/routes/timer_screen.dart';
 
 import '../constants.dart';
 import '../utils.dart';
 
 class TimerListScreen extends StatelessWidget {
-  const TimerListScreen({Key? key}) : super(key: key);
+  TimerListScreen({Key? key}) : super(key: key);
+  TimerTypeValue? _radioValue = TimerTypeValue.normal;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,90 @@ class TimerListScreen extends StatelessWidget {
                 shape: CircleBorder(),
                 child: InkWell(
                   onTap: () {
-                    navigator!.pushNamed('/addtimer');
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return Container(
+                            padding: EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              color: whiteColorDarkTheme,
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                              ),
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                timsTextBuilder(
+                                    text: 'Select Timer Type',
+                                    textSize: 24,
+                                    color: blackColorWhiteTheme),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                StatefulBuilder(
+                                  builder: (context, setState) {
+                                    return Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        ListTile(
+                                          onTap: () {
+                                            setState(() {
+                                              _radioValue =
+                                                  TimerTypeValue.normal;
+                                            });
+                                          },
+                                          title: timsTextBuilder(
+                                              text: 'Normal Timer',
+                                              textSize: 18,
+                                              color: blackColorWhiteTheme),
+                                          leading: Icon(LineIcons.hourglass,
+                                              color: blackColorWhiteTheme),
+                                          trailing: Radio<TimerTypeValue>(
+                                            value: TimerTypeValue.normal,
+                                            groupValue: _radioValue,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                _radioValue = value;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                        ListTile(
+                                          onTap: () {
+                                            setState(() {
+                                              _radioValue =
+                                                  TimerTypeValue.interval;
+                                            });
+                                          },
+                                          title: timsTextBuilder(
+                                              text: 'Interval Timer',
+                                              textSize: 18,
+                                              color: blackColorWhiteTheme),
+                                          leading: Icon(LineIcons.clock,
+                                              color: blackColorWhiteTheme),
+                                          trailing: Radio<TimerTypeValue>(
+                                            value: TimerTypeValue.interval,
+                                            groupValue: _radioValue,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                _radioValue = value;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                              ],
+                            ));
+                      },
+                    );
                   },
                   borderRadius: BorderRadius.circular(fabSize),
                   child: Container(
@@ -45,12 +130,14 @@ class TimerListScreen extends StatelessWidget {
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
   }
 }
+
+enum TimerTypeValue { normal, interval }
 
 class TimerListTile extends StatelessWidget {
   const TimerListTile({Key? key}) : super(key: key);

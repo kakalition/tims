@@ -15,7 +15,7 @@ import 'timer_screen.dart';
 
 class MainRoute extends StatelessWidget {
   MainRoute({Key? key}) : super(key: key);
-  List<Widget> screens = const [
+  List<Widget> screens = [
     TimerScreen(key: PageStorageKey('Timer Screen')),
     StopwatchScreen(key: PageStorageKey('Stopwatch Screen')),
     TimerListScreen(key: PageStorageKey('Timer List Screen')),

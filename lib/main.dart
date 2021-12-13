@@ -7,6 +7,7 @@ import '../routes/splash_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'routes/add_interval_timer.dart';
 import 'routes/add_timer_route.dart';
 
 void main() {
@@ -44,6 +45,12 @@ class MyApp extends StatelessWidget {
           GetPage(
             name: '/addnormaltimer',
             page: () => AddNormalTimer(),
+            transition: Transition.fadeIn,
+            transitionDuration: const Duration(milliseconds: 150),
+          ),
+          GetPage(
+            name: '/addintervaltimer',
+            page: () => AddIntervalTimer(),
             transition: Transition.fadeIn,
             transitionDuration: const Duration(milliseconds: 150),
           ),
