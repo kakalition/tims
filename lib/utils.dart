@@ -10,7 +10,7 @@ Widget timsTextBuilderWithStyle(
 
 Widget timsTextBuilder(
     {required String text,
-    required double textSize,
+    double textSize = 16,
     FontWeight fontWeight = FontWeight.w500,
     Color color = whiteColorDarkTheme}) {
   return Text(text,
