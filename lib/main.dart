@@ -37,12 +37,6 @@ class MyApp extends StatelessWidget {
             transitionDuration: const Duration(milliseconds: 150),
           ),
           GetPage(
-            name: '/addtimer',
-            page: () => const AddTimerRoute(),
-            transition: Transition.fadeIn,
-            transitionDuration: const Duration(milliseconds: 150),
-          ),
-          GetPage(
             name: '/addnormaltimer',
             page: () => AddNormalTimer(),
             transition: Transition.fadeIn,

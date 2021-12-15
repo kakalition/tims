@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:simple_animations/simple_animations.dart';
 import 'package:tims/routes/timer_screen.dart';
+import 'package:tims/viewmodels/timer_list_viewmodel.dart';
 import 'package:tims/widgets/two_actionbutton.dart';
 
 import '../constants.dart';
@@ -10,10 +11,10 @@ import '../utils.dart';
 
 class TimerListScreen extends StatelessWidget {
   TimerListScreen({Key? key}) : super(key: key);
-  TimerTypeValue? _radioValue = TimerTypeValue.normal;
 
   @override
   Widget build(BuildContext context) {
+    TimerListVM viewmodel = Get.put(TimerListVM());
     const double fabSize = 56;
     return Container(
       color: backgroundDarkTheme,
@@ -37,7 +38,7 @@ class TimerListScreen extends StatelessWidget {
                       context: context,
                       builder: (context) {
                         return Container(
-                          padding: EdgeInsets.all(20),
+                          padding: EdgeInsets.symmetric(vertical: 20),
                           decoration: BoxDecoration(
                             color: whiteColorDarkTheme,
                             borderRadius: const BorderRadius.only(
@@ -55,73 +56,7 @@ class TimerListScreen extends StatelessWidget {
                               const SizedBox(
                                 height: 20,
                               ),
-                              StatefulBuilder(
-                                builder: (context, setState) {
-                                  return Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      ListTile(
-                                        onTap: () {
-                                          setState(
-                                            () {
-                                              _radioValue =
-                                                  TimerTypeValue.normal;
-                                            },
-                                          );
-                                        },
-                                        title: timsTextBuilder(
-                                            text: 'Normal Timer',
-                                            textSize: 20,
-                                            color: blackColorWhiteTheme),
-                                        leading: Icon(LineIcons.hourglass, size: 36,
-                                            color: blackColorWhiteTheme),
-                                        trailing: Radio<TimerTypeValue>(
-                                          value: TimerTypeValue.normal,
-                                          groupValue: _radioValue,
-                                          onChanged: (value) {
-                                            setState(
-                                              () {
-                                                _radioValue = value;
-                                              },
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                      ListTile(
-                                        onTap: () {
-                                          setState(
-                                            () {
-                                              _radioValue =
-                                                  TimerTypeValue.interval;
-                                            },
-                                          );
-                                        },
-                                        title: timsTextBuilder(
-                                            text: 'Interval Timer',
-                                            textSize: 20,
-                                            color: blackColorWhiteTheme),
-                                        leading: Icon(LineIcons.clock, size: 36,
-                                            color: blackColorWhiteTheme),
-                                        trailing: Radio<TimerTypeValue>(
-                                          value: TimerTypeValue.interval,
-                                          groupValue: _radioValue,
-                                          onChanged: (value) {
-                                            setState(
-                                              () {
-                                                _radioValue = value;
-                                              },
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Align(alignment: Alignment.centerRight, child: TwoButton()),
+                              TimerRadio(viewmodel: viewmodel)
                             ],
                           ),
                         );
@@ -144,6 +79,63 @@ class TimerListScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class TimerRadio extends StatelessWidget {
+  const TimerRadio({
+    Key? key, required this.viewmodel
+  }) : super(key: key);
+	final TimerListVM viewmodel;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Obx( 
+          () => ListTile(
+            onTap: () {
+						viewmodel.setRadioValue(TimerTypeValue.normal);
+					},
+            title: timsTextBuilder(
+                text: 'Normal Timer', textSize: 20, color: blackColorWhiteTheme),
+            leading:
+                Icon(LineIcons.hourglass, size: 36, color: blackColorWhiteTheme),
+            trailing: Radio<TimerTypeValue>(
+              value: TimerTypeValue.normal,
+              groupValue: viewmodel.currentRadioValue.value,
+              onChanged: (value) {
+							viewmodel.setRadioValue(value);
+						},
+            ),
+          ),
+        ),
+        Obx(
+          () => ListTile(
+            onTap: () {
+						viewmodel.setRadioValue(TimerTypeValue.interval);
+					},
+            title: timsTextBuilder(
+                text: 'Interval Timer',
+                textSize: 20,
+                color: blackColorWhiteTheme),
+            leading: Icon(LineIcons.clock, size: 36, color: blackColorWhiteTheme),
+            trailing: Radio<TimerTypeValue>(
+              value: TimerTypeValue.interval,
+              groupValue: viewmodel.currentRadioValue.value,
+              onChanged: (value) {
+							viewmodel.setRadioValue(value);
+						},
+            ),
+          ),
+        ),
+        Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+          Align(alignment: Alignment.centerRight, child: TwoButton(viewmodel: viewmodel)),
+          const SizedBox(width: 10)
+        ]),
+      ],
     );
   }
 }
