@@ -16,10 +16,10 @@ import 'timer_screen.dart';
 class MainRoute extends StatelessWidget {
   MainRoute({Key? key}) : super(key: key);
   List<Widget> screens = [
-    TimerScreen(key: PageStorageKey('Timer Screen')),
-    StopwatchScreen(key: PageStorageKey('Stopwatch Screen')),
-    TimerListScreen(key: PageStorageKey('Timer List Screen')),
-    HistoryScreen(key: PageStorageKey('History Screen')),
+    const TimerScreen(key: PageStorageKey('Timer Screen')),
+    const StopwatchScreen(key: PageStorageKey('Stopwatch Screen')),
+    TimerListScreen(key: const PageStorageKey('Timer List Screen')),
+    const HistoryScreen(key: PageStorageKey('History Screen')),
   ];
 
   @override
@@ -90,7 +90,7 @@ class _MainRouteDrawer extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(LineIcons.userCircleAlt, size: 100),
+                  const Icon(LineIcons.userCircleAlt, size: 100),
                   const SizedBox(height: 50),
                   timsTextBuilder(
                       text: "Kaka", textSize: 24, fontWeight: FontWeight.w600),
@@ -102,30 +102,29 @@ class _MainRouteDrawer extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 50),
             Expanded(
               flex: 3,
               child: ListView(
                 children: [
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 3),
+                    margin: const EdgeInsets.symmetric(vertical: 3),
                     child: NavigationDrawerTile(
                         icon: LineIcons.clock, tileLabel: 'Timer', index: 0),
                   ),
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 3),
+                    margin: const EdgeInsets.symmetric(vertical: 3),
                     child: NavigationDrawerTile(
                         icon: LineIcons.flag, tileLabel: 'Stopwatch', index: 1),
                   ),
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 3),
+                    margin: const EdgeInsets.symmetric(vertical: 3),
                     child: NavigationDrawerTile(
                         icon: LineIcons.list,
                         tileLabel: 'Timer List',
                         index: 2),
                   ),
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 3),
+                    margin: const EdgeInsets.symmetric(vertical: 3),
                     child: NavigationDrawerTile(
                         icon: LineIcons.history,
                         tileLabel: 'History',
