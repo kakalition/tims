@@ -62,7 +62,7 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
     iconButtonAnimation = Tween<double>(begin: 0, end: 1)
         .animate(playPauseIconController)
         .drive(CurveTween(curve: Curves.easeOut));
-    revealAnimation = Tween<Offset>(begin: Offset.zero, end: Offset(0, MediaQuery.of(context).size.height * 0.15))
+    revealAnimation = Tween<Offset>(begin: Offset.zero, end: Offset(0, MediaQuery.of(context).size.height * 0.2))
         .animate(revealController.drive(CurveTween(curve: Curves.easeOut)));
     if (widget.source == ViewmodelSource.timer) {
       timeAnimation = viewmodel.getTimerTween().animate(timeController);

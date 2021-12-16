@@ -48,7 +48,7 @@ class AddTimerVM extends GetxController {
       };
 
   void Function() deleteDigit() => () {
-        deleteTimePiece();
         changeTimeDigit(0);
+        deleteTimePiece();
       };
 }
