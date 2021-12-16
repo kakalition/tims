@@ -30,7 +30,7 @@ class AddNormalTimer extends StatelessWidget {
         elevation: 0,
       ),
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.only(top: 5, left: 20, bottom: 20, right: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -38,14 +38,15 @@ class AddNormalTimer extends StatelessWidget {
           children: [
             TextField(
               decoration: InputDecoration(
+							contentPadding: const EdgeInsets.all(8),
                 label: timsTextBuilder(text: "Timer Name", textSize: 16),
-                border: OutlineInputBorder(
+                border: const OutlineInputBorder(
                   borderSide: BorderSide(color: whiteColorDarkTheme, width: 2),
                 ),
-                enabledBorder: OutlineInputBorder(
+                enabledBorder: const OutlineInputBorder(
                   borderSide: BorderSide(color: whiteColorDarkTheme, width: 2),
                 ),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                   borderSide: BorderSide(color: whiteColorDarkTheme, width: 2),
                 ),
               ),
@@ -58,7 +59,6 @@ class AddNormalTimer extends StatelessWidget {
             ClockInput(
               timeDigit: viewmodel.timeDigit,
             ),
-            SizedBox(height: MediaQuery.of(context).size.width * 0.05),
           ],
         ),
       ),

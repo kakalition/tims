@@ -26,7 +26,7 @@ class CircleClock extends StatelessWidget {
         () => timsTextBuilder(
             text:
                 '${viewmodel.timeDigit[0]}${viewmodel.timeDigit[1]}:${viewmodel.timeDigit[2]}${viewmodel.timeDigit[3]}',
-            textSize: 32,
+            textSize: 28,
             color: Colors.black),
       )),
     );
