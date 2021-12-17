@@ -9,6 +9,7 @@ import 'dart:math' as math;
 
 import '../constants.dart';
 import '../utils.dart';
+import 'timer_list_screen.dart';
 
 class StopwatchScreen extends StatelessWidget {
   const StopwatchScreen({Key? key}) : super(key: key);
@@ -39,9 +40,7 @@ class StopwatchScreen extends StatelessWidget {
             Container(
                 height: MediaQuery.of(context).size.height * 0.27,
                 child: PlayPauseButton(source: ViewmodelSource.stopwatch)),
-            const SizedBox(
-              height: 80,
-            ),
+						const TimerListTile(),
           ],
         ),
       ),
@@ -81,7 +80,7 @@ class _StopwatchCircleState extends State<StopwatchCircle> with AnimationMixin {
           height: widget.timerCircleSize,
           width: widget.timerCircleSize,
           decoration: BoxDecoration(
-            border: Border.all(width: 16, color: Color(0xFF212121)),
+            border: Border.all(width: 10, color: Color(0xFF212121)),
             borderRadius: BorderRadius.circular(
               widget.timerCircleSize,
             ),
