@@ -29,37 +29,41 @@ class AddNormalTimer extends StatelessWidget {
         ),
         elevation: 0,
       ),
-      body: Container(
-        padding: const EdgeInsets.only(top: 5, left: 20, bottom: 20, right: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            TextField(
-              decoration: InputDecoration(
+      body: SingleChildScrollView(
+        child: Container(
+					height: MediaQuery.of(context).size.height * 0.88,
+					width: MediaQuery.of(context).size.width,
+          padding: const EdgeInsets.only(top: 5, left: 20, bottom: 20, right: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              TextField(
+                decoration: InputDecoration(
 							contentPadding: const EdgeInsets.all(8),
-                label: timsTextBuilder(text: "Timer Name", textSize: 16),
-                border: const OutlineInputBorder(
-                  borderSide: BorderSide(color: whiteColorDarkTheme, width: 2),
-                ),
-                enabledBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: whiteColorDarkTheme, width: 2),
-                ),
-                focusedBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: whiteColorDarkTheme, width: 2),
+                  label: timsTextBuilder(text: "Timer Name", textSize: 16),
+                  border: const OutlineInputBorder(
+                    borderSide: BorderSide(color: whiteColorDarkTheme, width: 2),
+                  ),
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: whiteColorDarkTheme, width: 2),
+                  ),
+                  focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: whiteColorDarkTheme, width: 2),
+                  ),
                 ),
               ),
-            ),
-            const Spacer(),
-            CircleClock(
-              viewmodel: viewmodel,
-            ),
-            const Spacer(),
-            ClockInput(
-              timeDigit: viewmodel.timeDigit,
-            ),
-          ],
+              const Spacer(),
+              CircleClock(
+                viewmodel: viewmodel,
+              ),
+              const Spacer(),
+              ClockInput(
+                timeDigit: viewmodel.timeDigit,
+              ),
+            ],
+          ),
         ),
       ),
     );

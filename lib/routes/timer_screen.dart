@@ -1,17 +1,13 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_animations/simple_animations.dart';
-import 'package:tims/enum/playpause_button_state.dart';
 import 'package:tims/enum/viewmodel_source.dart';
 import 'package:tims/viewmodels/timer_viewmodel.dart';
 import 'package:tims/widgets/play_pause_button.dart';
 
 import '../constants.dart';
 import '../utils.dart';
+import 'timer_list_screen.dart';
 
 class TimerScreen extends StatelessWidget {
   const TimerScreen({Key? key}) : super(key: key);
@@ -33,16 +29,14 @@ class TimerScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
           children: [
-            TimeCircle(),
+            TimeCircle(timerCircleSize: timerCircleSize),
             const SizedBox(
               height: 30,
             ),
             Container(
                 height: MediaQuery.of(context).size.height * 0.27,
                 child: PlayPauseButton(source: ViewmodelSource.timer)),
-            const SizedBox(
-              height: 80,
-            ),
+						const TimerListTile()
           ],
         ),
       ),
@@ -51,9 +45,11 @@ class TimerScreen extends StatelessWidget {
 }
 
 class TimeCircle extends StatefulWidget {
-  const TimeCircle({
+  TimeCircle({
     Key? key,
+		required this.timerCircleSize,
   }) : super(key: key);
+  double timerCircleSize;
 
   @override
   State<TimeCircle> createState() => _TimeCircleState();
@@ -74,23 +70,27 @@ class _TimeCircleState extends State<TimeCircle> with AnimationMixin {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.width * 0.7,
-      width: MediaQuery.of(context).size.width * 0.7,
+      height: widget.timerCircleSize,
+      width: widget.timerCircleSize,
       child: Stack(
         alignment: Alignment.center,
         children: [
           Stack(
             children: [
-              Transform.scale(
-                  scale: 8,
-                  child: CircularProgressIndicator(
-                      color: Color(0xFF212121), strokeWidth: 1.4, value: 1)),
-              Transform.scale(
-                  scale: 8,
-                  child: CircularProgressIndicator(
-                      color: whiteColorDarkTheme,
-                      strokeWidth: 1.4,
-                      value: circleAnimation.value))
+              SizedBox(
+								height: widget.timerCircleSize,
+								width: widget.timerCircleSize,
+                child: const CircularProgressIndicator(
+                    color: Color(0xFF212121), strokeWidth: 10, value: 1),
+              ),
+              SizedBox(
+								height: widget.timerCircleSize,
+								width: widget.timerCircleSize,
+                child: CircularProgressIndicator(
+                    color: whiteColorDarkTheme,
+                    strokeWidth: 10,
+                    value: circleAnimation.value),
+              )
             ],
           ),
           timsTextBuilder(

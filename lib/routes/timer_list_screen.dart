@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:simple_animations/simple_animations.dart';
-import 'package:tims/routes/timer_screen.dart';
 import 'package:tims/viewmodels/timer_list_viewmodel.dart';
 import 'package:tims/widgets/two_actionbutton.dart';
 
@@ -153,8 +152,8 @@ class TimerListTile extends StatelessWidget {
           context: context,
           builder: (context) {
             return Container(
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(10),
                   topRight: Radius.circular(10),
                 ),
@@ -171,12 +170,12 @@ class TimerListTile extends StatelessWidget {
                     child: InkWell(
                       onTap: () {},
                       child: Container(
-                        margin: EdgeInsets.all(12),
+                        margin: const EdgeInsets.all(12),
                         child: Row(
                           children: [
                             Container(
-                              padding: EdgeInsets.all(8),
-                              child: Icon(LineIcons.seedling,
+                              padding: const EdgeInsets.all(8),
+                              child: const Icon(LineIcons.seedling,
                                   color: blackColorWhiteTheme, size: 32),
                             ),
                             const SizedBox(
@@ -196,12 +195,12 @@ class TimerListTile extends StatelessWidget {
                     child: InkWell(
                       onTap: () {},
                       child: Container(
-                        margin: EdgeInsets.all(12),
+                        margin: const EdgeInsets.all(12),
                         child: Row(
                           children: [
                             Container(
-                              padding: EdgeInsets.all(8),
-                              child: Icon(LineIcons.pencilRuler,
+                              padding: const EdgeInsets.all(8),
+                              child: const Icon(LineIcons.pencilRuler,
                                   color: blackColorWhiteTheme, size: 32),
                             ),
                             const SizedBox(
@@ -220,12 +219,12 @@ class TimerListTile extends StatelessWidget {
                     color: whiteColorDarkTheme,
                     child: InkWell(
                       child: Container(
-                        margin: EdgeInsets.all(12),
+                        margin: const EdgeInsets.all(12),
                         child: Row(
                           children: [
                             Container(
-                              padding: EdgeInsets.all(8),
-                              child: Icon(LineIcons.trash,
+                              padding: const EdgeInsets.all(8),
+                              child: const Icon(LineIcons.trash,
                                   color: blackColorWhiteTheme, size: 32),
                             ),
                             const SizedBox(
@@ -247,26 +246,32 @@ class TimerListTile extends StatelessWidget {
         );
       },
       child: Container(
-        margin: EdgeInsets.all(4),
+        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+				decoration: BoxDecoration(color: const Color(0xFF212121), borderRadius: BorderRadius.circular(16)),
         child: Row(
           children: [
             Container(
-              padding: EdgeInsets.only(top: 12, right: 12, bottom: 12, left: 4),
-              child: Icon(LineIcons.hourglass, size: 56),
+              padding: const EdgeInsets.only(top: 12, right: 0, bottom: 16, left: 18),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  timsTextBuilder(
+                      text: 'Study Timer',
+                      textSize: 22,
+                      fontWeight: FontWeight.w500),
+                  timsTextBuilder(
+                      text: '24:00', textSize: 16, fontWeight: FontWeight.w300),
+                ],
+              ),
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                timsTextBuilder(
-                    text: 'Study Timer',
-                    textSize: 24,
-                    fontWeight: FontWeight.w500),
-                timsTextBuilder(
-                    text: '24:00', textSize: 18, fontWeight: FontWeight.w300),
-              ],
-            )
+						const Spacer(),
+            Container(
+						  alignment: Alignment.center,
+              padding: const EdgeInsets.only(top: 12, right: 12, bottom: 12, left: 0),
+              child: const Icon(LineIcons.hourglass, size: 48),
+            ),
           ],
         ),
       ),

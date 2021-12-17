@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:simple_animations/simple_animations.dart';
 import 'package:tims/enum/playpause_button_state.dart';
 import 'package:tims/enum/viewmodel_source.dart';
-import 'package:tims/viewmodels/main_viewmodel.dart';
 import 'package:tims/viewmodels/stopwatch_viewmodel.dart';
 import 'package:tims/viewmodels/timer_viewmodel.dart';
 
@@ -53,7 +52,7 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
   @override
   void didChangeDependencies() {
     timerCircleSize = getCircleTimerSize(context);
-    playButtonSize = timerCircleSize / 1.618 / 1.5;
+    playButtonSize = timerCircleSize / 1.618 / 1.8;
     playIconSize = playButtonSize * 0.5;
     restartButtonSize = playButtonSize / 1.618;
     restartIconSize = restartButtonSize * 0.4;
@@ -62,7 +61,7 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
     iconButtonAnimation = Tween<double>(begin: 0, end: 1)
         .animate(playPauseIconController)
         .drive(CurveTween(curve: Curves.easeOut));
-    revealAnimation = Tween<Offset>(begin: Offset.zero, end: Offset(0, MediaQuery.of(context).size.height * 0.2))
+    revealAnimation = Tween<Offset>(begin: Offset.zero, end: Offset(0, MediaQuery.of(context).size.height * 0.16))
         .animate(revealController.drive(CurveTween(curve: Curves.easeOut)));
     if (widget.source == ViewmodelSource.timer) {
       timeAnimation = viewmodel.getTimerTween().animate(timeController);
@@ -70,7 +69,7 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
     if (widget.source == ViewmodelSource.timer) {
       timeController.duration = viewmodel.currentTimerDuration;
     } else if (widget.source == ViewmodelSource.stopwatch) {
-      timeController.duration = Duration(milliseconds: 1500);
+      timeController.duration = const Duration(milliseconds: 1500);
     }
 
     super.didChangeDependencies();

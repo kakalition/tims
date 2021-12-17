@@ -6,7 +6,6 @@ import 'package:tims/routes/main_route.dart';
 
 import '../routes/splash_route.dart';
 import 'routes/add_interval_timer.dart';
-import 'routes/add_timer_route.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,7 +20,7 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: ThemeData.dark().copyWith(
             scaffoldBackgroundColor: blackColorWhiteTheme,
-            appBarTheme: AppBarTheme().copyWith(color: blackColorWhiteTheme),
+            appBarTheme: const AppBarTheme().copyWith(color: blackColorWhiteTheme),
 						toggleableActiveColor: blackColorWhiteTheme,
 						unselectedWidgetColor: blackColorWhiteTheme.withOpacity(0.5),
             canvasColor: drawerColorDarkTheme),
