@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:tims/viewmodels/add_timer_viewmodel.dart';
+import 'package:tims/viewmodels/main_viewmodel.dart';
 import 'package:tims/widgets/circle_clock.dart';
 import 'package:tims/widgets/circle_input.dart';
 
@@ -11,7 +12,8 @@ import '../constants.dart';
 
 class AddNormalTimer extends StatelessWidget {
   AddNormalTimer({Key? key}) : super(key: key);
-  AddTimerVM viewmodel = Get.put(AddTimerVM());
+	final MainVM mainViewmodel = Get.find<MainVM>();
+  final AddTimerVM viewmodel = Get.put(AddTimerVM());
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class AddNormalTimer extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Container(
-					height: MediaQuery.of(context).size.height * 0.88,
+					height: mainViewmodel.scrollableHeight,
 					width: MediaQuery.of(context).size.width,
           padding: const EdgeInsets.only(top: 5, left: 20, bottom: 20, right: 20),
           child: Column(

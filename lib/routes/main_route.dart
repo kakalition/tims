@@ -14,12 +14,10 @@ import 'timer_screen.dart';
 
 class MainRoute extends StatelessWidget {
   MainRoute({Key? key}) : super(key: key);
-  List<Widget> screensList = [
-  ];
 
   @override
   Widget build(BuildContext context) {
-    MainVM viewmodel = Get.put(MainVM());
+    MainVM viewmodel = Get.find<MainVM>();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
