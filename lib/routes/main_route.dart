@@ -8,24 +8,18 @@ import 'package:tims/routes/history_screen.dart';
 import 'package:tims/viewmodels/main_viewmodel.dart';
 import 'package:tims/routes/stopwatch_screen.dart';
 import 'package:tims/routes/timer_list_screen.dart';
-import 'package:tims/viewmodels/stopwatch_viewmodel.dart';
 import '../constants.dart';
 import '../utils.dart';
 import 'timer_screen.dart';
 
 class MainRoute extends StatelessWidget {
   MainRoute({Key? key}) : super(key: key);
-  List<Widget> screens = [
-    const TimerScreen(key: PageStorageKey('Timer Screen')),
-    const StopwatchScreen(key: PageStorageKey('Stopwatch Screen')),
-    TimerListScreen(key: const PageStorageKey('Timer List Screen')),
-    const HistoryScreen(key: PageStorageKey('History Screen')),
+  List<Widget> screensList = [
   ];
 
   @override
   Widget build(BuildContext context) {
     MainVM viewmodel = Get.put(MainVM());
-    Get.put(StopwatchVM());
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -49,8 +43,7 @@ class MainRoute extends StatelessWidget {
         ],
       ),
       drawer: _MainRouteDrawer(),
-      body: Obx(
-        () => PageStorage(
+      body: PageStorage(
           bucket: PageStorageBucket(),
           child: PageTransitionSwitcher(
             transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
@@ -59,10 +52,19 @@ class MainRoute extends StatelessWidget {
                   secondaryAnimation: secondaryAnimation,
                   child: child);
             },
-            child: screens[viewmodel.navigationIndex.value],
+            child: Obx(
+              () => IndexedStack(
+							index: viewmodel.navigationIndex.value,
+							children: [
+								const TimerScreen(key: PageStorageKey('Timer Screen')),
+								const StopwatchScreen(key: PageStorageKey('Stopwatch Screen')),
+								TimerListScreen(key: const PageStorageKey('Timer List Screen')),
+								const HistoryScreen(key: PageStorageKey('History Screen')),
+							],
+						),
+            ) 
           ),
         ),
-      ),
     );
   }
 }

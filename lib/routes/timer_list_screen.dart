@@ -247,8 +247,10 @@ class TimerListTile extends StatelessWidget {
       },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+				width: MediaQuery.of(context).size.width,
 				decoration: BoxDecoration(color: const Color(0xFF212121), borderRadius: BorderRadius.circular(16)),
         child: Row(
+					mainAxisSize: MainAxisSize.max,
           children: [
             Container(
               padding: const EdgeInsets.only(top: 12, right: 0, bottom: 16, left: 18),
