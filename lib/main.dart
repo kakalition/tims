@@ -7,6 +7,7 @@ import 'package:tims/routes/main_route.dart';
 import '../routes/splash_route.dart';
 import 'routes/add_interval_timer.dart';
 import 'utils.dart';
+import 'viewmodels/main_viewmodel.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+		Get.put(MainVM(), permanent: true);
     return GetMaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData.dark().copyWith(

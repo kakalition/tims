@@ -5,12 +5,14 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:tims/constants.dart';
+import 'package:tims/viewmodels/main_viewmodel.dart';
 
 class SplashRoute extends StatelessWidget {
   const SplashRoute({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+		Get.find<MainVM>().initWidgetSize(context);
     Timer(const Duration(seconds: 2), () => Get.offNamed('/main'));
     return Scaffold(
       body: Center(

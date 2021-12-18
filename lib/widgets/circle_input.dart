@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:tims/viewmodels/add_timer_viewmodel.dart';
+import 'package:tims/viewmodels/main_viewmodel.dart';
 
 import '../utils.dart';
 import '../constants.dart';
 
 class ClockInput extends StatelessWidget {
   ClockInput({Key? key, required this.timeDigit}) : super(key: key);
-  RxList<int> timeDigit;
-  AddTimerVM viewmodel = Get.find<AddTimerVM>();
+  final RxList<int> timeDigit;
+	final MainVM mainViewmodel = Get.find<MainVM>();
+  final AddTimerVM viewmodel = Get.find<AddTimerVM>();
 
   @override
   Widget build(BuildContext context) {
@@ -27,19 +29,19 @@ class ClockInput extends StatelessWidget {
               digit: '1',
               fun: viewmodel.clickDigit(1),
             ),
-            SizedBox(width: MediaQuery.of(context).size.width * 0.03),
+            SizedBox(width: mainViewmodel.digitSpacing),
             DigitPiece(
               digit: '2',
               fun: viewmodel.clickDigit(2),
             ),
-            SizedBox(width: MediaQuery.of(context).size.width * 0.03),
+            SizedBox(width: mainViewmodel.digitSpacing),
             DigitPiece(
               digit: '3',
               fun: viewmodel.clickDigit(3),
             )
           ],
         ),
-        SizedBox(height: MediaQuery.of(context).size.width * 0.03),
+        SizedBox(height: mainViewmodel.digitSpacing),
         Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -49,19 +51,19 @@ class ClockInput extends StatelessWidget {
               digit: '4',
               fun: viewmodel.clickDigit(4),
             ),
-            SizedBox(width: MediaQuery.of(context).size.width * 0.03),
+            SizedBox(width: mainViewmodel.digitSpacing),
             DigitPiece(
               digit: '5',
               fun: viewmodel.clickDigit(5),
             ),
-            SizedBox(width: MediaQuery.of(context).size.width * 0.03),
+            SizedBox(width: mainViewmodel.digitSpacing),
             DigitPiece(
               digit: '6',
               fun: viewmodel.clickDigit(6),
             )
           ],
         ),
-        SizedBox(height: MediaQuery.of(context).size.width * 0.03),
+        SizedBox(height: mainViewmodel.digitSpacing),
         Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -71,19 +73,19 @@ class ClockInput extends StatelessWidget {
               digit: '7',
               fun: viewmodel.clickDigit(7),
             ),
-            SizedBox(width: MediaQuery.of(context).size.width * 0.03),
+            SizedBox(width: mainViewmodel.digitSpacing),
             DigitPiece(
               digit: '8',
               fun: viewmodel.clickDigit(8),
             ),
-            SizedBox(width: MediaQuery.of(context).size.width * 0.03),
+            SizedBox(width: mainViewmodel.digitSpacing),
             DigitPiece(
               digit: '9',
               fun: viewmodel.clickDigit(9),
             )
           ],
         ),
-        SizedBox(height: MediaQuery.of(context).size.width * 0.03),
+        SizedBox(height: mainViewmodel.digitSpacing),
         Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -94,12 +96,12 @@ class ClockInput extends StatelessWidget {
               color: whiteColorDarkTheme,
               fun: viewmodel.deleteDigit(),
             ),
-            SizedBox(width: MediaQuery.of(context).size.width * 0.03),
+            SizedBox(width: mainViewmodel.digitSpacing),
             DigitPiece(
               digit: '0',
               fun: viewmodel.clickDigit(0),
             ),
-            SizedBox(width: MediaQuery.of(context).size.width * 0.03),
+            SizedBox(width: mainViewmodel.digitSpacing),
             DigitPiece(
               icon: LineIcons.check,
               color: whiteColorDarkTheme,
@@ -120,32 +122,33 @@ class DigitPiece extends StatelessWidget {
     required this.fun,
     this.color = const Color(0xFF343434),
   }) : super(key: key);
-  String? digit;
-  IconData? icon;
-  Color color;
-  void Function() fun;
+	final MainVM mainViewmodel = Get.find<MainVM>();
+  final String? digit;
+  final IconData? icon;
+  final Color color;
+  final void Function() fun;
 
   @override
   Widget build(BuildContext context) {
     return Material(
       color: color,
       borderRadius: BorderRadius.circular(
-        MediaQuery.of(context).size.width * 0.15,
+        mainViewmodel.digitPieceSize,
       ),
       child: InkWell(
         onTap: () {
           fun();
         },
         borderRadius: BorderRadius.circular(
-          MediaQuery.of(context).size.width * 0.15,
+          mainViewmodel.digitPieceSize,
         ),
         child: InkWell(
           child: Container(
-            height: MediaQuery.of(context).size.width * 0.15,
-            width: MediaQuery.of(context).size.width * 0.15,
+            height: mainViewmodel.digitPieceSize,
+            width: mainViewmodel.digitPieceSize,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(
-                MediaQuery.of(context).size.width * 0.15,
+                mainViewmodel.digitPieceSize,
               ),
             ),
             child: icon == null

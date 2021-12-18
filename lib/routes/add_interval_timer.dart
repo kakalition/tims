@@ -3,13 +3,15 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:tims/viewmodels/add_timer_viewmodel.dart';
+import 'package:tims/viewmodels/main_viewmodel.dart';
 import 'package:tims/widgets/circle_clock.dart';
 
 import '../utils.dart';
 
 class AddIntervalTimer extends StatelessWidget {
   AddIntervalTimer({Key? key}) : super(key: key);
-  AddTimerVM viewmodel = Get.put(AddTimerVM());
+  final MainVM mainViewmodel = Get.find<MainVM>();
+  final AddTimerVM viewmodel = Get.put(AddTimerVM());
 
   @override
   Widget build(BuildContext context) {
@@ -20,14 +22,14 @@ class AddIntervalTimer extends StatelessWidget {
               navigator!.pop();
             },
             icon: const Icon(LineIcons.arrowLeft)),
-				actions: [
+        actions: [
           IconButton(
-            onPressed: () {
-              navigator!.pop();
-            },
-            icon: const Icon(LineIcons.check)),
-					const SizedBox(width: 5),
-				],
+              onPressed: () {
+                navigator!.pop();
+              },
+              icon: const Icon(LineIcons.check)),
+          const SizedBox(width: 5),
+        ],
         centerTitle: true,
         title: Text(
           "Add Interval Timer",
@@ -37,9 +39,9 @@ class AddIntervalTimer extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Container(
-				height: MediaQuery.of(context).size.height * 0.88,
-				width: MediaQuery.of(context).size.width,
-				padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          height: mainViewmodel.scrollableHeight,
+          width: MediaQuery.of(context).size.width,
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -66,7 +68,8 @@ class AddIntervalTimer extends StatelessWidget {
               Expanded(
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 10),
-                  padding: const EdgeInsets.only(left: 20, top: 10, right: 10, bottom: 5),
+                  padding: const EdgeInsets.only(
+                      left: 20, top: 10, right: 10, bottom: 5),
                   decoration: BoxDecoration(
                     color: const Color(0xFF2C2C2C),
                     borderRadius: BorderRadius.circular(20),
@@ -81,12 +84,15 @@ class AddIntervalTimer extends StatelessWidget {
                           timsTextBuilder(text: 'Interval List', textSize: 24),
                           const Spacer(),
                           Material(
-													color: Colors.transparent,
-													borderRadius: BorderRadius.circular(40),
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(40),
                             child: InkWell(
-													onTap: () {},
-													borderRadius: BorderRadius.circular(40),
-                              child: Container( height: 40, width: 40, child: const Icon(Icons.close)),
+                              onTap: () {},
+                              borderRadius: BorderRadius.circular(40),
+                              child: const SizedBox(
+                                  height: 40,
+                                  width: 40,
+                                  child: Icon(Icons.close)),
                             ),
                           ),
                         ],
