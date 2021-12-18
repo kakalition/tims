@@ -33,15 +33,19 @@ class TimerScreen extends StatelessWidget {
             const SizedBox(
               height: 30,
             ),
-            Container(
-                height: MediaQuery.of(context).size.height * 0.27,
-                child: PlayPauseButton(source: ViewmodelSource.timer)),
-						const TimerListTile()
+            SizedBox(
+							height: MediaQuery.of(context).size.height * 0.27,
+							child: PlayPauseButton(source: ViewmodelSource.timer)),
+						const Align(
+							alignment: Alignment.bottomCenter,
+							child: TimerListTile(),
+						)
           ],
         ),
       ),
     );
   }
+
 }
 
 class TimeCircle extends StatefulWidget {
@@ -66,10 +70,16 @@ class _TimeCircleState extends State<TimeCircle> with AnimationMixin {
     circleAnimation =
         Tween<double>(begin: 1, end: 0).animate(viewmodel.getTimeController());
   }
+	
+	@override
+	void dispose() {
+		debugPrint("Disposed");
+		super.dispose();
+	}
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: widget.timerCircleSize,
       width: widget.timerCircleSize,
       child: Stack(
