@@ -19,7 +19,7 @@ class TimerVM extends GetxController {
   AnimationController getTimeController() => _timeController!;
 
 	// Current Timer Duration
-  Duration? _currentTimerDuration = const Duration(minutes: 1, seconds: 30);
+  Duration? _currentTimerDuration = const Duration(seconds: 10);
 	void setCurrentTimerDuration(Duration duration) {
 		_currentTimerDuration = duration;
 	}
