@@ -9,6 +9,8 @@ import 'notification_service.dart';
 import 'routes/add_interval_timer.dart';
 import 'viewmodels/animation_center.dart';
 import 'viewmodels/main_viewmodel.dart';
+import 'viewmodels/stopwatch_viewmodel.dart';
+import 'viewmodels/timer_viewmodel.dart';
 
 Future<void> main() async{
 	// Initialize NotificationService
@@ -25,6 +27,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 		// Put viewmodel to memory permanently
 		Get.put(MainVM(), permanent: true);
+		Get.put(TimerVM());
+		Get.put(StopwatchVM());
 		Get.put(AnimationCenter(), permanent: true);
 
 		// Main application
