@@ -31,7 +31,7 @@ class TimerScreen extends StatelessWidget {
             ),
             SizedBox(
 							height: MediaQuery.of(context).size.height * 0.27,
-							child: PlayPauseButton(source: ViewmodelSource.timer)),
+							child: const PlayPauseButton(source: ViewmodelSource.timer)),
 						const Align(
 							alignment: Alignment.bottomCenter,
 							child: TimerListTile(),

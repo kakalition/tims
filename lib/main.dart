@@ -5,11 +5,13 @@ import 'package:tims/routes/add_normal_timer.dart';
 import 'package:tims/routes/main_route.dart';
 
 import '../routes/splash_route.dart';
+import 'notification_service.dart';
 import 'routes/add_interval_timer.dart';
-import 'utils.dart';
 import 'viewmodels/main_viewmodel.dart';
 
-void main() {
+Future<void> main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+	await NotificationService().init();
   runApp(const MyApp());
 }
 

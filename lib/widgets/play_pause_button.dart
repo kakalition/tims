@@ -18,7 +18,8 @@ class PlayPauseButton extends StatefulWidget {
 }
 
 class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
-	MainVM mainViewmodel = Get.find<MainVM>();
+  MainVM mainViewmodel = Get.find<MainVM>();
+	TimerVM timerViewmodel = Get.find<TimerVM>();
   dynamic viewmodel;
 
   late AnimationController playPauseButtonController;
@@ -34,7 +35,7 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
   void initState() {
     super.initState();
 
-		// Controller Initialization
+    // Controller Initialization
     playPauseButtonController = createController();
     playPauseIconController = createController();
     revealController = createController();
@@ -45,16 +46,26 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
     }
     timeController = viewmodel.getTimeController();
 
-		// Animation Initialization
+    // Animation Initialization
     buttonAnimation =
         Tween<double>(begin: 1, end: 1.05).animate(playPauseButtonController);
     iconButtonAnimation = Tween<double>(begin: 0, end: 1)
         .animate(playPauseIconController)
         .drive(CurveTween(curve: Curves.easeOut));
-    revealAnimation = Tween<Offset>(begin: Offset.zero, end: Offset(0, mainViewmodel.revealLengthFactor))
+    revealAnimation = Tween<Offset>(
+            begin: Offset.zero,
+            end: Offset(0, mainViewmodel.revealLengthFactor))
         .animate(revealController.drive(CurveTween(curve: Curves.easeOut)));
     if (widget.source == ViewmodelSource.timer) {
-      timeAnimation = viewmodel.getTimerTween().animate(timeController);
+      timeAnimation = viewmodel.getTimerTween().animate(timeController)
+        ..addStatusListener(
+          (status) {
+            if (status == AnimationStatus.completed) {
+							debugPrint("Completed");
+							timerViewmodel.showNotification();
+						}
+          },
+        );
     }
     if (widget.source == ViewmodelSource.timer) {
       timeController.duration = viewmodel.currentTimerDuration;
@@ -105,17 +116,20 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
         Transform.translate(
           offset: revealAnimation.value,
           child: Material(
-            borderRadius: BorderRadius.circular(mainViewmodel.restartButtonSize),
+            borderRadius:
+                BorderRadius.circular(mainViewmodel.restartButtonSize),
             child: InkWell(
-              onTap: () async{
-                await timeController.playReverse(duration: const Duration(milliseconds: 800));
-								timeController.duration = viewmodel.currentTimerDuration;
+              onTap: () async {
+                await timeController.playReverse(
+                    duration: const Duration(milliseconds: 800));
+                timeController.duration = viewmodel.currentTimerDuration;
                 viewmodel.turnOffTimer();
                 playPauseIconController.playReverse();
                 revealController.playReverse(
                     duration: const Duration(milliseconds: 300));
               },
-              borderRadius: BorderRadius.circular(mainViewmodel.restartButtonSize),
+              borderRadius:
+                  BorderRadius.circular(mainViewmodel.restartButtonSize),
               child: Container(
                 height: mainViewmodel.restartButtonSize,
                 width: mainViewmodel.restartButtonSize,
