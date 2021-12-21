@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../notification_service.dart';
+
 class TimerVM extends GetxController {
 
 	// Time Status
@@ -19,7 +21,7 @@ class TimerVM extends GetxController {
   AnimationController getTimeController() => _timeController!;
 
 	// Current Timer Duration
-  Duration? _currentTimerDuration = const Duration(seconds: 10);
+  Duration? _currentTimerDuration = const Duration(seconds: 5);
 	void setCurrentTimerDuration(Duration duration) {
 		_currentTimerDuration = duration;
 	}
@@ -31,4 +33,10 @@ class TimerVM extends GetxController {
 	// Formatted Timer String
   String formattedTimerString(Animation animation) =>
       "${(animation.value as Duration).inMinutes.toString().padLeft(2, '0')}:${((animation.value as Duration).inSeconds % 60).toString().padLeft(2, '0')}";
+
+	// Show Notification
+	NotificationService notificationService = NotificationService();
+	Future<void> showNotification() async {
+		await notificationService.flutterLocalNotificationsPlugin.show(0, 'Title', 'Body', notificationService.platformChannelSpecifics, payload: 'Payload');
+	}
 }
