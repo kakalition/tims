@@ -7,11 +7,14 @@ import 'package:tims/routes/main_route.dart';
 import '../routes/splash_route.dart';
 import 'notification_service.dart';
 import 'routes/add_interval_timer.dart';
+import 'viewmodels/animation_center.dart';
 import 'viewmodels/main_viewmodel.dart';
 
 Future<void> main() async{
+	// Initialize NotificationService
   WidgetsFlutterBinding.ensureInitialized();
 	await NotificationService().init();
+
   runApp(const MyApp());
 }
 
@@ -20,7 +23,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+		// Put viewmodel to memory permanently
 		Get.put(MainVM(), permanent: true);
+		Get.put(AnimationCenter(), permanent: true);
+
+		// Main application
     return GetMaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData.dark().copyWith(
@@ -49,7 +56,7 @@ class MyApp extends StatelessWidget {
           ),
           GetPage(
             name: '/main',
-            page: () => MainRoute(),
+            page: () => const MainRoute(),
             transition: Transition.fadeIn,
             transitionDuration: const Duration(milliseconds: 150),
           ),

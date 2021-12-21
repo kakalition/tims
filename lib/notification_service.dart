@@ -10,9 +10,9 @@ class NotificationService {
 	final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 	Future<void> init() async{
-		final AndroidInitializationSettings androidInitializationSettings = AndroidInitializationSettings('chat');
+		const AndroidInitializationSettings androidInitializationSettings = AndroidInitializationSettings('chat');
 	  // final IOSInitializationSettings? iosInitializationSettings = null;	
-		final InitializationSettings initializationSettings = InitializationSettings(android: androidInitializationSettings, iOS: null); 
+		const InitializationSettings initializationSettings = InitializationSettings(android: androidInitializationSettings, iOS: null); 
 
     await flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification: selectNotification);
 	}

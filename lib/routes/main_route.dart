@@ -13,7 +13,7 @@ import '../utils.dart';
 import 'timer_screen.dart';
 
 class MainRoute extends StatelessWidget {
-  MainRoute({Key? key}) : super(key: key);
+ const MainRoute({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class MainRoute extends StatelessWidget {
               onPressed: () {
                 Scaffold.of(context).openDrawer();
               },
-              icon: Icon(LineIcons.gripLines),
+              icon: const Icon(LineIcons.gripLines),
             );
           },
         ),
@@ -40,7 +40,7 @@ class MainRoute extends StatelessWidget {
           IconButton(onPressed: () {}, icon: const Icon(LineIcons.cog))
         ],
       ),
-      drawer: _MainRouteDrawer(),
+      drawer: const _MainRouteDrawer(),
       body: PageStorage(
           bucket: PageStorageBucket(),
           child: PageTransitionSwitcher(
@@ -53,11 +53,11 @@ class MainRoute extends StatelessWidget {
             child: Obx(
               () => IndexedStack(
 							index: viewmodel.navigationIndex.value,
-							children: [
-								const TimerScreen(key: PageStorageKey('Timer Screen')),
-								const StopwatchScreen(key: PageStorageKey('Stopwatch Screen')),
-								TimerListScreen(key: const PageStorageKey('Timer List Screen')),
-								const HistoryScreen(key: PageStorageKey('History Screen')),
+							children: const [
+								TimerScreen(key: PageStorageKey('Timer Screen')),
+								StopwatchScreen(key: PageStorageKey('Stopwatch Screen')),
+								TimerListScreen(key: PageStorageKey('Timer List Screen')),
+								HistoryScreen(key: PageStorageKey('History Screen')),
 							],
 						),
             ) 
@@ -76,7 +76,7 @@ class _MainRouteDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
         child: Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -108,24 +108,24 @@ class _MainRouteDrawer extends StatelessWidget {
                 children: [
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 3),
-                    child: NavigationDrawerTile(
+                    child: const NavigationDrawerTile(
                         icon: LineIcons.clock, tileLabel: 'Timer', index: 0),
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 3),
-                    child: NavigationDrawerTile(
+                    child: const NavigationDrawerTile(
                         icon: LineIcons.flag, tileLabel: 'Stopwatch', index: 1),
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 3),
-                    child: NavigationDrawerTile(
+                    child: const NavigationDrawerTile(
                         icon: LineIcons.list,
                         tileLabel: 'Timer List',
                         index: 2),
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 3),
-                    child: NavigationDrawerTile(
+                    child: const NavigationDrawerTile(
                         icon: LineIcons.history,
                         tileLabel: 'History',
                         index: 3),
@@ -141,15 +141,15 @@ class _MainRouteDrawer extends StatelessWidget {
 }
 
 class NavigationDrawerTile extends StatelessWidget {
-  NavigationDrawerTile(
+  const NavigationDrawerTile(
       {Key? key,
       required this.icon,
       required this.tileLabel,
       required this.index})
       : super(key: key);
-  IconData icon;
-  String tileLabel;
-  int index;
+  final IconData icon;
+  final String tileLabel;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -166,7 +166,7 @@ class NavigationDrawerTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(55),
         child: Container(
           alignment: Alignment.centerLeft,
-          padding: EdgeInsets.symmetric(horizontal: 15),
+          padding: const EdgeInsets.symmetric(horizontal: 15),
           height: 55,
           width: double.infinity,
           child: Row(
