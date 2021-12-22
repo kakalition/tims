@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_animations/simple_animations.dart';
 import 'package:tims/enum/viewmodel_source.dart';
+import 'package:tims/viewmodels/animation_center.dart';
 import 'package:tims/viewmodels/main_viewmodel.dart';
 import 'package:tims/viewmodels/stopwatch_viewmodel.dart';
 import 'package:tims/widgets/play_pause_button.dart';
@@ -54,13 +55,15 @@ class StopwatchCircle extends StatefulWidget {
 
 class _StopwatchCircleState extends State<StopwatchCircle> with AnimationMixin {
 	MainVM mainViewmodel = Get.find<MainVM>();
-  late Animation circleAnimation;
+	AnimationCenter animationCenter = Get.find<AnimationCenter>();
+	StopwatchVM viewmodel = Get.put(StopwatchVM());
 
   @override
   void initState() {
     super.initState();
-    circleAnimation = Tween<double>(begin: 0, end: 2).animate(controller);
-    Get.find<StopwatchVM>().setTimeController(controller);
+		animationCenter.setAnimationController(TimsAnimation.stopwatchCircle, createController());
+		animationCenter.setAnimationController(TimsAnimation.stopwatchTime, createController());
+		animationCenter.initStopwatchAnimation();
   }
 
   @override
@@ -82,7 +85,7 @@ class _StopwatchCircleState extends State<StopwatchCircle> with AnimationMixin {
           ),
         ),
         Transform.rotate(
-          angle: math.pi * circleAnimation.value,
+          angle: math.pi * animationCenter.getAnimation(TimsAnimation.stopwatchCircle)!.value,
           child: Container(
             height: mainViewmodel.circleTimerSize,
             width: mainViewmodel.circleTimerSize,

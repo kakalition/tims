@@ -18,24 +18,6 @@ class AnimationCenter extends GetxController {
 	MainVM mainViewmodel = Get.find<MainVM>();
 	TimerVM timerViewmodel = Get.find<TimerVM>();
 
-	AnimationCenter() {
-		_playPauseButtonAnimation = Tween<double>(begin: 1, end: 1.05)
-				.animate(_playPauseButtonController!);
-		_playPauseIconAnimation = Tween<double>(begin: 0, end: 1)
-        .animate(_playPauseIconController!)
-        .drive(CurveTween(curve: Curves.easeOut));
-		_revealButtonAnimation = Tween<Offset>(begin: Offset.zero, end: Offset(0, mainViewmodel.revealLengthFactor))
-        .animate(_revealButtonController!.drive(CurveTween(curve: Curves.easeOut)));
-		_timerTimeAnimation = Tween<Duration>(begin: timerViewmodel.currentTimerDuration, end: Duration.zero)
-				.animate(_timerTimeController!);
-		_stopwatchTimeAnimation = Tween<Duration>(begin: Duration.zero, end: const Duration(days: 30))
-				.animate(_stopwatchTimeController!);
-    _timerCircleAnimation = Tween<double>(begin: 1, end: 0)
-				.animate(_timerCircleController!);
-		_stopwatchCircleAnimation = Tween<double>(begin: 0, end: 2)
-				.animate(_stopwatchCircleController!);
-	}
-
   AnimationController? _playPauseButtonController;
 	AnimationController? _playPauseIconController;
 	AnimationController? _revealButtonController;
@@ -52,76 +34,80 @@ class AnimationCenter extends GetxController {
 	Animation<double>? _timerCircleAnimation;
 	Animation<double>? _stopwatchCircleAnimation;
 
+	void initTimerAnimation() {
+		if(_timerTimeAnimation == null) {
+			_timerTimeAnimation = Tween<Duration>(begin: timerViewmodel.currentTimerDuration, end: Duration.zero)
+					.animate(_timerTimeController!);
+			_timerCircleAnimation = Tween<double>(begin: 1, end: 0)
+					.animate(_timerCircleController!);
+		}
+	}
+
+	void initStopwatchAnimation() {
+		if(_stopwatchTimeAnimation == null) {
+			_stopwatchTimeAnimation = Tween<Duration>(begin: Duration.zero, end: const Duration(days: 30))
+					.animate(_stopwatchTimeController!);
+			_stopwatchCircleAnimation = Tween<double>(begin: 0, end: 2)
+					.animate(_stopwatchCircleController!);
+		}
+	}
+
+	void initPlayPauseAnimation() {
+		if(_playPauseButtonAnimation == null) {
+			_playPauseButtonAnimation = Tween<double>(begin: 1, end: 1.05)
+					.animate(_playPauseButtonController!);
+			_playPauseIconAnimation = Tween<double>(begin: 0, end: 1)
+					.animate(_playPauseIconController!)
+					.drive(CurveTween(curve: Curves.easeOut));
+			_revealButtonAnimation = Tween<Offset>(begin: Offset.zero, end: Offset(0, mainViewmodel.revealLengthFactor))
+					.animate(_revealButtonController!.drive(CurveTween(curve: Curves.easeOut)));
+		}
+	}
+
 	/// Set animation controller to corresponding enum.
-	void setAnimationController(TimsAnimation anim, AnimationController controller) {
+	AnimationController setAnimationController(TimsAnimation anim, AnimationController controller) {
 		switch(anim) {
 		  case TimsAnimation.playPauseButton:
-				_playPauseButtonController = controller;
-				break;
+				_playPauseButtonController ??= controller;
+				return controller;
 		  case TimsAnimation.playPauseIcon:
-		    _playPauseIconController = controller;
-				break;
+		    _playPauseIconController ??= controller;
+				return controller;
 		  case TimsAnimation.revealButton:
-		    _revealButtonController = controller;
-				break;
+		    _revealButtonController ??= controller;
+				return controller;
 		  case TimsAnimation.timerTime:
-		    _timerTimeController = controller;
-				break;
+		    _timerTimeController ??= controller;
+				return controller;
 		  case TimsAnimation.stopwatchTime:
-				_stopwatchTimeController = controller;
-				break;
+				_stopwatchTimeController ??= controller;
+				return controller;
 		  case TimsAnimation.timerCircle:
-		    _timerCircleController = controller;
-				break;
+		    _timerCircleController ??= controller;
+				return controller;
 		  case TimsAnimation.stopwatchCircle:
-		    _stopwatchCircleController = controller;
-				break;
+		    _stopwatchCircleController ??= controller;
+				return controller;
 		}
 	}
 
 	/// Returns animation controller of corresponding enum.
-	Animation? getAnimationController(TimsAnimation anim) {
+	AnimationController getAnimationController(TimsAnimation anim) {
 		switch(anim) {
 		  case TimsAnimation.playPauseButton:
-				return _playPauseButtonController;
+				return _playPauseButtonController!;
 		  case TimsAnimation.playPauseIcon:
-		    return _playPauseIconController;
+		    return _playPauseIconController!;
 		  case TimsAnimation.revealButton:
-		    return _revealButtonController;
+		    return _revealButtonController!;
 		  case TimsAnimation.timerTime:
-		    return _timerTimeController;
+		    return _timerTimeController!;
 		  case TimsAnimation.stopwatchTime:
-				return _stopwatchTimeController;
+				return _stopwatchTimeController!;
 		  case TimsAnimation.timerCircle:
-		    return _timerCircleController;
+		    return _timerCircleController!;
 		  case TimsAnimation.stopwatchCircle:
-		    return _stopwatchCircleController;
-		}
-	}
-	/// Set animation to corresponding enum.
-	void setAnimation(TimsAnimation anim, Animation animation) {
-		switch(anim) {
-		  case TimsAnimation.playPauseButton:
-				_playPauseButtonAnimation = animation as Animation<double>;
-				break;
-		  case TimsAnimation.playPauseIcon:
-		    _playPauseIconAnimation = animation as Animation<double>;
-				break;
-		  case TimsAnimation.revealButton:
-		    _revealButtonAnimation = animation as Animation<Offset>;
-				break;
-		  case TimsAnimation.timerTime:
-		    _timerTimeAnimation = animation as Animation<Duration>;
-				break;
-		  case TimsAnimation.stopwatchTime:
-				_stopwatchTimeAnimation = animation as Animation<Duration>;
-				break;
-		  case TimsAnimation.timerCircle:
-		    _timerCircleAnimation = animation as Animation<double>;
-				break;
-		  case TimsAnimation.stopwatchCircle:
-		    _stopwatchCircleAnimation = animation as Animation<double>;
-				break;
+		    return _stopwatchCircleController!;
 		}
 	}
 
@@ -143,5 +129,14 @@ class AnimationCenter extends GetxController {
 		  case TimsAnimation.stopwatchCircle:
 		    return _stopwatchCircleAnimation;
 		}
+	}
+
+	void initTimerDuration() {
+		_timerTimeController!.duration = Get.find<TimerVM>().currentTimerDuration;
+		_timerCircleController!.duration = Get.find<TimerVM>().currentTimerDuration;
+	}
+
+	void initStopwatchDuration() {
+		_stopwatchCircleController!.duration = const Duration(milliseconds: 1500);
 	}
 }
