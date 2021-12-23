@@ -20,7 +20,7 @@ class TwoButton extends StatelessWidget {
 							navigator!.pop();
 						},
           child: Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             height: 40,
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(50)),
             child: timsTextBuilder(
@@ -39,7 +39,7 @@ class TwoButton extends StatelessWidget {
 						},
             child: Container(
                 alignment: Alignment.center,
-								padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+								padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                 height: 40,
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(50)),

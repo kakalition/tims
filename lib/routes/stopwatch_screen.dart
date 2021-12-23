@@ -3,12 +3,13 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_animations/simple_animations.dart';
 import 'package:tims/enum/viewmodel_source.dart';
+import 'package:tims/viewmodels/animation_center.dart';
+import 'package:tims/viewmodels/main_viewmodel.dart';
 import 'package:tims/viewmodels/stopwatch_viewmodel.dart';
 import 'package:tims/widgets/play_pause_button.dart';
 import 'dart:math' as math;
 
 import '../constants.dart';
-import '../utils.dart';
 import 'timer_list_screen.dart';
 
 class StopwatchScreen extends StatelessWidget {
@@ -17,11 +18,6 @@ class StopwatchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     StopwatchVM viewmodel = Get.put(StopwatchVM());
-    final double timerCircleSize = getCircleTimerSize(context);
-    final double playButtonSize = timerCircleSize / 1.618 / 1.5;
-    final double restartButtonSize = playButtonSize / 1.618;
-    final double playIconSize = playButtonSize * 0.4;
-    final double restartIconSize = restartButtonSize * 0.4;
 
     return Container(
       color: backgroundDarkTheme,
@@ -32,14 +28,14 @@ class StopwatchScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           children: [
             // Time Circle
-            StopwatchCircle(timerCircleSize: timerCircleSize),
+            const StopwatchCircle(),
             const SizedBox(
               height: 30,
             ),
             // Play/Stop Button
-            Container(
+            SizedBox(
                 height: MediaQuery.of(context).size.height * 0.27,
-                child: PlayPauseButton(source: ViewmodelSource.stopwatch)),
+                child: const PlayPauseButton(source: ViewmodelSource.stopwatch)),
 						const TimerListTile(),
           ],
         ),
@@ -51,23 +47,23 @@ class StopwatchScreen extends StatelessWidget {
 class StopwatchCircle extends StatefulWidget {
   const StopwatchCircle({
     Key? key,
-    required this.timerCircleSize,
   }) : super(key: key);
-
-  final double timerCircleSize;
 
   @override
   State<StopwatchCircle> createState() => _StopwatchCircleState();
 }
 
 class _StopwatchCircleState extends State<StopwatchCircle> with AnimationMixin {
-  late Animation circleAnimation;
+	MainVM mainViewmodel = Get.find<MainVM>();
+	AnimationCenter animationCenter = Get.find<AnimationCenter>();
+	StopwatchVM viewmodel = Get.put(StopwatchVM());
 
   @override
   void initState() {
     super.initState();
-    circleAnimation = Tween<double>(begin: 0, end: 2).animate(controller);
-    Get.find<StopwatchVM>().setTimeController(controller);
+		animationCenter.setAnimationController(TimsAnimation.stopwatchCircle, createController());
+		animationCenter.setAnimationController(TimsAnimation.stopwatchTime, createController());
+		animationCenter.initStopwatchAnimation();
   }
 
   @override
@@ -77,13 +73,11 @@ class _StopwatchCircleState extends State<StopwatchCircle> with AnimationMixin {
       children: [
         Container(
           alignment: Alignment.center,
-          height: widget.timerCircleSize,
-          width: widget.timerCircleSize,
+          height: mainViewmodel.circleTimerSize,
+          width: mainViewmodel.circleTimerSize,
           decoration: BoxDecoration(
-            border: Border.all(width: 10, color: Color(0xFF212121)),
-            borderRadius: BorderRadius.circular(
-              widget.timerCircleSize,
-            ),
+            border: Border.all(width: 10, color: const Color(0xFF212121)),
+            borderRadius: BorderRadius.circular(mainViewmodel.circleTimerSize),
           ),
           child: Text(
             "00:00:00",
@@ -91,10 +85,10 @@ class _StopwatchCircleState extends State<StopwatchCircle> with AnimationMixin {
           ),
         ),
         Transform.rotate(
-          angle: math.pi * circleAnimation.value,
+          angle: math.pi * animationCenter.getAnimation(TimsAnimation.stopwatchCircle)!.value,
           child: Container(
-            height: widget.timerCircleSize,
-            width: widget.timerCircleSize,
+            height: mainViewmodel.circleTimerSize,
+            width: mainViewmodel.circleTimerSize,
             alignment: Alignment.topCenter,
             child: Container(
               height: 16,

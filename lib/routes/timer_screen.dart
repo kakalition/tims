@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:simple_animations/simple_animations.dart';
 import 'package:tims/enum/viewmodel_source.dart';
+import 'package:tims/viewmodels/animation_center.dart';
 import 'package:tims/viewmodels/main_viewmodel.dart';
 import 'package:tims/viewmodels/timer_viewmodel.dart';
 import 'package:tims/widgets/play_pause_button.dart';
@@ -17,6 +18,7 @@ class TimerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     TimerVM viewmodel = Get.put(TimerVM());
     
+		// Timer Screen Layout
     return Container(
       color: backgroundDarkTheme,
       child: Center(
@@ -44,6 +46,7 @@ class TimerScreen extends StatelessWidget {
 
 }
 
+// Circle in Timer Screen
 class TimeCircle extends StatefulWidget {
   const TimeCircle({
     Key? key,
@@ -55,15 +58,15 @@ class TimeCircle extends StatefulWidget {
 
 class _TimeCircleState extends State<TimeCircle> with AnimationMixin {
 	MainVM mainViewmodel = Get.find<MainVM>();
+	AnimationCenter animationCenter = Get.find<AnimationCenter>();
   TimerVM viewmodel = Get.find<TimerVM>();
-  late Animation circleAnimation;
 
   @override
   void initState() {
     super.initState();
-    viewmodel.setTimeController(controller);
-    circleAnimation =
-        Tween<double>(begin: 1, end: 0).animate(viewmodel.getTimeController());
+    animationCenter.setAnimationController(TimsAnimation.timerCircle, createController());
+		animationCenter.setAnimationController(TimsAnimation.timerTime, createController());
+		animationCenter.initTimerAnimation();
   }
 
   @override
@@ -88,13 +91,12 @@ class _TimeCircleState extends State<TimeCircle> with AnimationMixin {
                 child: CircularProgressIndicator(
                     color: whiteColorDarkTheme,
                     strokeWidth: 10,
-                    value: circleAnimation.value),
+                    value:animationCenter.getAnimation(TimsAnimation.timerCircle)!.value),
               )
             ],
           ),
           timsTextBuilder(
-              text: viewmodel.formattedTimerString(
-                  viewmodel.getTimerTween().animate(controller)),
+              text: formattedTimerString(animationCenter.getAnimation(TimsAnimation.timerTime)!),
               textSize: 38,
               fontWeight: FontWeight.w400),
         ],

@@ -18,8 +18,6 @@ Widget timsTextBuilder(
           fontSize: textSize, fontWeight: fontWeight, color: color));
 }
 
-double getCircleTimerSize(BuildContext context) =>
-    MediaQuery.of(context).size.width * 0.62;
-
-double getCircleClockSize(BuildContext context) =>
-    MediaQuery.of(context).size.height * 0.26;
+// Formatted Timer String
+String formattedTimerString(Animation animation) =>
+		"${(animation.value as Duration).inMinutes.toString().padLeft(2, '0')}:${((animation.value as Duration).inSeconds % 60).toString().padLeft(2, '0')}";

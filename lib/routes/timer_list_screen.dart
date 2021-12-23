@@ -9,7 +9,7 @@ import '../constants.dart';
 import '../utils.dart';
 
 class TimerListScreen extends StatelessWidget {
-  TimerListScreen({Key? key}) : super(key: key);
+  const TimerListScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class TimerListScreen extends StatelessWidget {
         alignment: Alignment.center,
         children: [
           ListView.builder(
-              itemBuilder: (context, index) => TimerListTile(), itemCount: 10),
+              itemBuilder: (context, index) => const TimerListTile(), itemCount: 10),
           PlayAnimation<double>(
             tween: Tween<double>(begin: -50, end: 60),
             duration: const Duration(milliseconds: 400),
@@ -30,17 +30,17 @@ class TimerListScreen extends StatelessWidget {
               bottom: value,
               child: Material(
                 color: whiteColorDarkTheme,
-                shape: CircleBorder(),
+                shape: const CircleBorder(),
                 child: InkWell(
                   onTap: () {
                     showModalBottomSheet(
                       context: context,
                       builder: (context) {
                         return Container(
-                          padding: EdgeInsets.symmetric(vertical: 20),
-                          decoration: BoxDecoration(
+                          padding: const  EdgeInsets.symmetric(vertical: 20),
+                          decoration: const BoxDecoration(
                             color: whiteColorDarkTheme,
-                            borderRadius: const BorderRadius.only(
+                            borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(10),
                               topRight: Radius.circular(10),
                             ),
@@ -69,7 +69,7 @@ class TimerListScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(fabSize),
                     ),
-                    child: Icon(LineIcons.plus,
+                    child: const Icon(LineIcons.plus,
                         color: blackColorWhiteTheme, size: fabSize / 2),
                   ),
                 ),
@@ -101,7 +101,7 @@ class TimerRadio extends StatelessWidget {
             title: timsTextBuilder(
                 text: 'Normal Timer', textSize: 20, color: blackColorWhiteTheme),
             leading:
-                Icon(LineIcons.hourglass, size: 36, color: blackColorWhiteTheme),
+                const Icon(LineIcons.hourglass, size: 36, color: blackColorWhiteTheme),
             trailing: Radio<TimerTypeValue>(
               value: TimerTypeValue.normal,
               groupValue: viewmodel.currentRadioValue.value,
@@ -120,7 +120,7 @@ class TimerRadio extends StatelessWidget {
                 text: 'Interval Timer',
                 textSize: 20,
                 color: blackColorWhiteTheme),
-            leading: Icon(LineIcons.clock, size: 36, color: blackColorWhiteTheme),
+            leading: const Icon(LineIcons.clock, size: 36, color: blackColorWhiteTheme),
             trailing: Radio<TimerTypeValue>(
               value: TimerTypeValue.interval,
               groupValue: viewmodel.currentRadioValue.value,

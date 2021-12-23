@@ -13,7 +13,7 @@ class HistoryScreen extends StatelessWidget {
       color: backgroundDarkTheme,
       child: ListView.builder(
         itemBuilder: (context, index) {
-          return HistoryTile();
+          return const HistoryTile();
         },
         itemCount: 10,
       ),
@@ -27,12 +27,12 @@ class HistoryTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(4),
+      margin: const EdgeInsets.all(4),
       child: Row(
         children: [
           Container(
-            padding: EdgeInsets.only(top: 12, right: 12, bottom: 12, left: 4),
-            child: Icon(LineIcons.hourglass, size: 56),
+            padding: const EdgeInsets.only(top: 12, right: 12, bottom: 12, left: 4),
+            child: const Icon(LineIcons.hourglass, size: 56),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -50,7 +50,7 @@ class HistoryTile extends StatelessWidget {
           const Spacer(),
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.close),
+            icon: const Icon(Icons.close),
           ),
           const SizedBox(
             width: 10,

@@ -10,7 +10,7 @@ class TimerVM extends GetxController {
   void toggleTimer() {
     isTimerActive.value = !isTimerActive.value;
   }
-  void turnOffTimer() {
+  void turnOffClock() {
     isTimerActive.value = false;
   }
 

@@ -7,6 +7,10 @@ class StopwatchVM extends GetxController {
     isTimerActive.value = !isTimerActive.value;
   }
 
+	void turnOffClock() {
+		isTimerActive.value = false;
+	}
+
   AnimationController? _timeController;
   void setTimeController(AnimationController controller) =>
       _timeController = controller;
