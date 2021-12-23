@@ -34,36 +34,6 @@ class AnimationCenter extends GetxController {
 	Animation<double>? _timerCircleAnimation;
 	Animation<double>? _stopwatchCircleAnimation;
 
-	void initTimerAnimation() {
-		if(_timerTimeAnimation == null) {
-			_timerTimeAnimation = Tween<Duration>(begin: timerViewmodel.currentTimerDuration, end: Duration.zero)
-					.animate(_timerTimeController!);
-			_timerCircleAnimation = Tween<double>(begin: 1, end: 0)
-					.animate(_timerCircleController!);
-		}
-	}
-
-	void initStopwatchAnimation() {
-		if(_stopwatchTimeAnimation == null) {
-			_stopwatchTimeAnimation = Tween<Duration>(begin: Duration.zero, end: const Duration(days: 30))
-					.animate(_stopwatchTimeController!);
-			_stopwatchCircleAnimation = Tween<double>(begin: 0, end: 2)
-					.animate(_stopwatchCircleController!);
-		}
-	}
-
-	void initPlayPauseAnimation() {
-		if(_playPauseButtonAnimation == null) {
-			_playPauseButtonAnimation = Tween<double>(begin: 1, end: 1.05)
-					.animate(_playPauseButtonController!);
-			_playPauseIconAnimation = Tween<double>(begin: 0, end: 1)
-					.animate(_playPauseIconController!)
-					.drive(CurveTween(curve: Curves.easeOut));
-			_revealButtonAnimation = Tween<Offset>(begin: Offset.zero, end: Offset(0, mainViewmodel.revealLengthFactor))
-					.animate(_revealButtonController!.drive(CurveTween(curve: Curves.easeOut)));
-		}
-	}
-
 	/// Set animation controller to corresponding enum.
 	AnimationController setAnimationController(TimsAnimation anim, AnimationController controller) {
 		switch(anim) {
@@ -131,6 +101,14 @@ class AnimationCenter extends GetxController {
 		}
 	}
 
+	AnimationController getTimeController(TimsAnimation anim) {
+    return anim == TimsAnimation.timerTime ? _timerTimeController! : _stopwatchTimeController!;	
+	}
+
+	AnimationController getCircleController(TimsAnimation anim) {
+    return anim == TimsAnimation.timerCircle ? _timerCircleController! : _stopwatchCircleController!;	
+	}
+
 	void initTimerDuration() {
 		_timerTimeController!.duration = Get.find<TimerVM>().currentTimerDuration;
 		_timerCircleController!.duration = Get.find<TimerVM>().currentTimerDuration;
@@ -139,4 +117,35 @@ class AnimationCenter extends GetxController {
 	void initStopwatchDuration() {
 		_stopwatchCircleController!.duration = const Duration(milliseconds: 1500);
 	}
+
+	void initTimerAnimation() {
+		if(_timerTimeAnimation == null) {
+			_timerTimeAnimation = Tween<Duration>(begin: timerViewmodel.currentTimerDuration, end: Duration.zero)
+					.animate(_timerTimeController!);
+			_timerCircleAnimation = Tween<double>(begin: 1, end: 0)
+					.animate(_timerCircleController!);
+		}
+	}
+
+	void initStopwatchAnimation() {
+		if(_stopwatchTimeAnimation == null) {
+			_stopwatchTimeAnimation = Tween<Duration>(begin: Duration.zero, end: const Duration(days: 30))
+					.animate(_stopwatchTimeController!);
+			_stopwatchCircleAnimation = Tween<double>(begin: 0, end: 2)
+					.animate(_stopwatchCircleController!);
+		}
+	}
+
+	Animation<double> initPlayPauseButtonAnimation(AnimationController controller) {
+		return Tween<double>(begin: 1, end: 1.05).animate(controller);
+	}
+	Animation<double> initPlayPauseIconAnimation(AnimationController controller) {
+    return Tween<double>(begin: 0, end: 1).animate(controller)
+			.drive(CurveTween(curve: Curves.easeOut));
+	}
+	Animation<Offset> initRevealButtonAnimation(AnimationController controller) {
+    return Tween<Offset>(begin: Offset.zero, end: Offset(0, mainViewmodel.revealLengthFactor))
+		  .animate(controller.drive(CurveTween(curve: Curves.easeOut)));
+	}
+
 }

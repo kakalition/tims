@@ -22,40 +22,40 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
   MainVM mainViewmodel = Get.find<MainVM>();
   AnimationCenter animationCenter = Get.find<AnimationCenter>();
   TimerVM timerViewmodel = Get.find<TimerVM>();
+	TimsAnimation? circleAnim;
   dynamic viewmodel;
 
   late AnimationController playPauseButtonController;
   late AnimationController playPauseIconController;
   late AnimationController revealButtonController;
-  late AnimationController timerTimeController;
-  late AnimationController stopwatchTimeController;
-  late AnimationController timerCircleController;
-  late AnimationController stopwatchCircleController;
+	late AnimationController timeController;
+	late AnimationController circleController;
+
+	late Animation<double> playPauseButtonAnimation;
+	late Animation<double> playPauseIconAnimation;
+	late Animation<Offset> revealButtonAnimation;
 
   @override
   void initState() {
     super.initState();
 
-    // Controller Initialization
-    playPauseButtonController = animationCenter.setAnimationController(
-        TimsAnimation.playPauseButton, createController());
-    playPauseIconController = animationCenter.setAnimationController(
-        TimsAnimation.playPauseIcon, createController());
-    revealButtonController = animationCenter.setAnimationController(
-        TimsAnimation.revealButton, createController());
+		// Initialize Circle Anim
+    circleAnim = widget.source == ViewmodelSource.timer ? TimsAnimation.timerCircle : TimsAnimation.stopwatchCircle;
 
-		if(widget.source == ViewmodelSource.timer) {
-			timerTimeController =
-				animationCenter.getAnimationController(TimsAnimation.timerTime);
-			timerCircleController =
-        animationCenter.getAnimationController(TimsAnimation.timerCircle);
-		}
-		else {
-			stopwatchTimeController =
-		  	animationCenter.getAnimationController(TimsAnimation.stopwatchTime);
-			stopwatchCircleController =
-				animationCenter.getAnimationController(TimsAnimation.stopwatchCircle);
-		}
+    // Controller Initialization
+    playPauseButtonController = createController();
+    playPauseIconController = createController();
+    revealButtonController = createController();
+    circleController = animationCenter.getCircleController(
+			widget.source == ViewmodelSource.timer ? 
+			TimsAnimation.timerCircle : 
+			TimsAnimation.stopwatchCircle
+		);
+    timeController = animationCenter.getTimeController(
+			widget.source == ViewmodelSource.timer ? 
+			TimsAnimation.timerTime : 
+			TimsAnimation.stopwatchTime
+		);
 
     // Viewmodel Assignment
     if (widget.source == ViewmodelSource.timer) {
@@ -71,8 +71,11 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
       animationCenter.initStopwatchDuration();
     }
 
-    // Initialize Play Pause Animation
-		animationCenter.initPlayPauseAnimation();
+    // Initialize Widget Animation;
+		playPauseButtonAnimation = animationCenter.initPlayPauseButtonAnimation(playPauseButtonController);
+		playPauseIconAnimation = animationCenter.initPlayPauseIconAnimation(playPauseIconController);
+		revealButtonAnimation = animationCenter.initRevealButtonAnimation(revealButtonController);
+		debugPrint(revealButtonAnimation.toStringDetails());
 
     // Animation Initialization
     if (widget.source == ViewmodelSource.timer) {
@@ -91,15 +94,15 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
 		// Button tapped
     if (state == PlayPauseButtonState.tap) {
       viewmodel.toggleTimer();
+
 			// Circle animation
       if (viewmodel.isTimerActive.value) {
-        if (widget.source == ViewmodelSource.timer) {
-          timerCircleController.forward();
-          timerTimeController.forward();
-        } else if (widget.source == ViewmodelSource.stopwatch) {
-          stopwatchCircleController.repeat();
-          stopwatchTimeController.forward();
-        }
+				if(circleAnim == TimsAnimation.timerCircle) {
+					circleController.forward();
+				} else {
+					circleController.repeat();
+				}
+				timeController.forward();
       } else {}
 
 			// Button forward animation
@@ -142,31 +145,30 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
         // Restart Button
         Transform.translate(
           offset:
-              animationCenter.getAnimation(TimsAnimation.revealButton)?.value,
+              revealButtonAnimation.value,
           child: Material(
             borderRadius:
                 BorderRadius.circular(mainViewmodel.restartButtonSize),
             child: InkWell(
               onTap: () async {
-								if(widget.source == ViewmodelSource.timer) {
-									await timerTimeController.playReverse(
-										duration: const Duration(milliseconds: 200));
-									await timerCircleController.playReverse(
-										duration: const Duration(milliseconds: 500));
-									timerTimeController.duration = viewmodel.currentTimerDuration;
-									timerCircleController.duration = viewmodel.currentTimerDuration;
-								} 
-								else {
-									await stopwatchTimeController.playReverse(
-										duration: const Duration(milliseconds: 200));
-									await stopwatchCircleController.playReverse(
-										duration: const Duration(milliseconds: 500));
-									stopwatchCircleController.value = 1.0;
-									await stopwatchCircleController.playReverse(
-										duration: const Duration(milliseconds: 250));
+								// Animate Circle
+								await timeController.playReverse(
+									duration: const Duration(milliseconds: 200));
+								await circleController.playReverse(
+									duration: const Duration(milliseconds: 500));
+
+								// Reset Duration
+								if(circleAnim == TimsAnimation.timerCircle) {
+									timeController.duration = viewmodel.currentTimerDuration;
+									circleController.duration = viewmodel.currentTimerDuration;
+								} else {
+									timeController.duration = const Duration(days: 30);
+									circleController.duration = const Duration(milliseconds: 1500);
 								}
-                // timeController.duration = viewmodel.currentTimerDuration;
-                viewmodel.turnOffTimer();
+								// Turning Off Timer
+                viewmodel.turnOffClock();
+
+								// Animate Play Icon and Reverse Reveal
                 playPauseIconController.playReverse();
                 revealButtonController.playReverse(
                     duration: const Duration(milliseconds: 300));
@@ -193,9 +195,7 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
         ),
         // Play/Stop Button
         Transform.scale(
-          scale: animationCenter
-              .getAnimation(TimsAnimation.playPauseButton)!
-              .value,
+          scale: playPauseButtonAnimation.value,
           child: Material(
             borderRadius: BorderRadius.circular(mainViewmodel.playButtonSize),
             child: InkWell(
