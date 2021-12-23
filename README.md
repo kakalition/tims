@@ -1,5 +1,4 @@
 # tims
-TEST
 
 A new Flutter project.
 
