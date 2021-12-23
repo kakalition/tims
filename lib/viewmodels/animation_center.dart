@@ -115,7 +115,8 @@ class AnimationCenter extends GetxController {
 	}
 
 	void initStopwatchDuration() {
-		_stopwatchTimeController!.duration = const Duration(days: 30);
+		_stopwatchTimeController!.duration = const Duration(days: 2);
+		_stopwatchTimeController!.reverseDuration = const Duration(seconds: 2);
 		_stopwatchCircleController!.duration = const Duration(milliseconds: 1500);
 	}
 
@@ -130,7 +131,7 @@ class AnimationCenter extends GetxController {
 
 	void initStopwatchAnimation() {
 		if(_stopwatchTimeAnimation == null) {
-			_stopwatchTimeAnimation = Tween<Duration>(begin: Duration.zero, end: const Duration(days: 30))
+			_stopwatchTimeAnimation = Tween<Duration>(begin: Duration.zero, end: const Duration(days: 2))
 					.animate(_stopwatchTimeController!);
 			_stopwatchCircleAnimation = Tween<double>(begin: 0, end: 2)
 					.animate(_stopwatchCircleController!);

@@ -69,7 +69,6 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
       animationCenter.initTimerDuration();
     } else if (widget.source == ViewmodelSource.stopwatch) {
       animationCenter.initStopwatchDuration();
-			debugPrint(animationCenter.getAnimationController(TimsAnimation.stopwatchTime)!.toStringDetails());
     }
 
     // Initialize Widget Animation;
@@ -102,7 +101,10 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
 					circleController.repeat();
 				}
 				timeController.forward();
-      } else {}
+      } else {
+				circleController.stop();
+				timeController.stop();
+			}
 
 			// Button forward animation
       await playPauseButtonController.play(
@@ -150,7 +152,6 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
                 BorderRadius.circular(mainViewmodel.restartButtonSize),
             child: InkWell(
               onTap: () async {
-								// Animate Circle
 								await timeController.playReverse(
 									duration: const Duration(milliseconds: 200));
 								await circleController.playReverse(
@@ -161,7 +162,7 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
 									timeController.duration = viewmodel.currentTimerDuration;
 									circleController.duration = viewmodel.currentTimerDuration;
 								} else {
-									timeController.duration = const Duration(days: 30);
+									timeController.duration = const Duration(days: 2);
 									circleController.duration = const Duration(milliseconds: 1500);
 								}
 								// Turning Off Timer
