@@ -14,6 +14,11 @@ class TimerVM extends GetxController {
     isTimerActive.value = false;
   }
 
+	RxBool isTimerCompleted = false.obs;
+	void finishTimer() {
+		isTimerCompleted.value = true;
+	}
+
 	// Time Animation Controller
   AnimationController? _timeController;
   void setTimeController(AnimationController controller) =>
