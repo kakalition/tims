@@ -69,20 +69,19 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
       animationCenter.initTimerDuration();
     } else if (widget.source == ViewmodelSource.stopwatch) {
       animationCenter.initStopwatchDuration();
+			debugPrint(animationCenter.getAnimationController(TimsAnimation.stopwatchTime)!.toStringDetails());
     }
 
     // Initialize Widget Animation;
 		playPauseButtonAnimation = animationCenter.initPlayPauseButtonAnimation(playPauseButtonController);
 		playPauseIconAnimation = animationCenter.initPlayPauseIconAnimation(playPauseIconController);
 		revealButtonAnimation = animationCenter.initRevealButtonAnimation(revealButtonController);
-		debugPrint(revealButtonAnimation.toStringDetails());
-
+		
     // Animation Initialization
     if (widget.source == ViewmodelSource.timer) {
       animationCenter.getAnimation(TimsAnimation.timerTime)!.addStatusListener(
         (status) {
           if (status == AnimationStatus.completed) {
-            debugPrint("Completed");
             timerViewmodel.showNotification();
           }
         },

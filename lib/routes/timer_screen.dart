@@ -64,9 +64,11 @@ class _TimeCircleState extends State<TimeCircle> with AnimationMixin {
   @override
   void initState() {
     super.initState();
-    animationCenter.setAnimationController(TimsAnimation.timerCircle, createController());
-		animationCenter.setAnimationController(TimsAnimation.timerTime, createController());
-		animationCenter.initTimerAnimation();
+		if(animationCenter.getAnimationController(TimsAnimation.timerCircle) == null) {
+			animationCenter.setAnimationController(TimsAnimation.timerCircle, createController());
+			animationCenter.setAnimationController(TimsAnimation.timerTime, createController());
+			animationCenter.initTimerAnimation();
+		}
   }
 
   @override
@@ -104,3 +106,4 @@ class _TimeCircleState extends State<TimeCircle> with AnimationMixin {
     );
   }
 }
+

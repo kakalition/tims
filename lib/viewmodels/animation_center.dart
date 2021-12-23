@@ -62,22 +62,22 @@ class AnimationCenter extends GetxController {
 	}
 
 	/// Returns animation controller of corresponding enum.
-	AnimationController getAnimationController(TimsAnimation anim) {
+	AnimationController? getAnimationController(TimsAnimation anim) {
 		switch(anim) {
 		  case TimsAnimation.playPauseButton:
-				return _playPauseButtonController!;
+				return _playPauseButtonController;
 		  case TimsAnimation.playPauseIcon:
-		    return _playPauseIconController!;
+		    return _playPauseIconController;
 		  case TimsAnimation.revealButton:
-		    return _revealButtonController!;
+		    return _revealButtonController;
 		  case TimsAnimation.timerTime:
-		    return _timerTimeController!;
+		    return _timerTimeController;
 		  case TimsAnimation.stopwatchTime:
-				return _stopwatchTimeController!;
+				return _stopwatchTimeController;
 		  case TimsAnimation.timerCircle:
-		    return _timerCircleController!;
+		    return _timerCircleController;
 		  case TimsAnimation.stopwatchCircle:
-		    return _stopwatchCircleController!;
+		    return _stopwatchCircleController;
 		}
 	}
 
@@ -115,6 +115,7 @@ class AnimationCenter extends GetxController {
 	}
 
 	void initStopwatchDuration() {
+		_stopwatchTimeController!.duration = const Duration(days: 30);
 		_stopwatchCircleController!.duration = const Duration(milliseconds: 1500);
 	}
 

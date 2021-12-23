@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_animations/simple_animations.dart';
 import 'package:tims/enum/viewmodel_source.dart';
+import 'package:tims/utils.dart';
 import 'package:tims/viewmodels/animation_center.dart';
 import 'package:tims/viewmodels/main_viewmodel.dart';
 import 'package:tims/viewmodels/stopwatch_viewmodel.dart';
@@ -61,9 +62,11 @@ class _StopwatchCircleState extends State<StopwatchCircle> with AnimationMixin {
   @override
   void initState() {
     super.initState();
-		animationCenter.setAnimationController(TimsAnimation.stopwatchCircle, createController());
-		animationCenter.setAnimationController(TimsAnimation.stopwatchTime, createController());
-		animationCenter.initStopwatchAnimation();
+		if(animationCenter.getAnimationController(TimsAnimation.stopwatchCircle) == null) {
+			animationCenter.setAnimationController(TimsAnimation.stopwatchCircle, createController());
+			animationCenter.setAnimationController(TimsAnimation.stopwatchTime, createController());
+			animationCenter.initStopwatchAnimation();
+		}
   }
 
   @override
@@ -78,10 +81,6 @@ class _StopwatchCircleState extends State<StopwatchCircle> with AnimationMixin {
           decoration: BoxDecoration(
             border: Border.all(width: 10, color: const Color(0xFF212121)),
             borderRadius: BorderRadius.circular(mainViewmodel.circleTimerSize),
-          ),
-          child: Text(
-            "00:00:00",
-            style: GoogleFonts.montserrat(fontSize: 34),
           ),
         ),
         Transform.rotate(
@@ -100,6 +99,10 @@ class _StopwatchCircleState extends State<StopwatchCircle> with AnimationMixin {
             ),
           ),
         ),
+				timsTextBuilder(
+						text: formattedTimerString(animationCenter.getAnimation(TimsAnimation.stopwatchTime)!),
+						textSize: 38,
+						fontWeight: FontWeight.w400),
       ],
     );
   }
