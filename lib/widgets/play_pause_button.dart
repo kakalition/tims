@@ -76,13 +76,14 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
 		playPauseIconAnimation = animationCenter.initPlayPauseIconAnimation(playPauseIconController);
 		revealButtonAnimation = animationCenter.initRevealButtonAnimation(revealButtonController);
 		
-    // Animation Initialization
+    // Animation Hook
     if (widget.source == ViewmodelSource.timer) {
       animationCenter.getAnimation(TimsAnimation.timerTime)!.addStatusListener(
         (status) {
           if (status == AnimationStatus.completed) {
             timerViewmodel.showNotification();
           }
+					revealButtonController.reverse();
         },
       );
     }
@@ -156,7 +157,6 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
 									duration: const Duration(milliseconds: 200));
 								await circleController.playReverse(
 									duration: const Duration(milliseconds: 500));
-
 								// Reset Duration
 								if(circleAnim == TimsAnimation.timerCircle) {
 									timeController.duration = viewmodel.currentTimerDuration;
@@ -193,6 +193,7 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
             ),
           ),
         ),
+
         // Play/Stop Button
         Transform.scale(
           scale: playPauseButtonAnimation.value,
@@ -226,6 +227,7 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with AnimationMixin {
                     size: mainViewmodel.playIconSize,
                   ),
                 ),
+
               ),
             ),
           ),

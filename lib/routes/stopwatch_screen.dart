@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_animations/simple_animations.dart';
 import 'package:tims/enum/viewmodel_source.dart';
 import 'package:tims/utils.dart';

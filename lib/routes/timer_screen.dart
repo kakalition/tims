@@ -27,6 +27,8 @@ class TimerScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
           children: [
+						const SizedBox(height:20),
+						const Spacer(),
             const TimeCircle(),
             const SizedBox(
               height: 30,
@@ -34,10 +36,9 @@ class TimerScreen extends StatelessWidget {
             SizedBox(
 							height: MediaQuery.of(context).size.height * 0.27,
 							child: const PlayPauseButton(source: ViewmodelSource.timer)),
-						const Align(
-							alignment: Alignment.bottomCenter,
-							child: TimerListTile(),
-						)
+						const Spacer(),
+            const TimerListTile(),
+						const SizedBox(height:20),
           ],
         ),
       ),
