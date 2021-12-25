@@ -61,14 +61,22 @@ class _TimeCircleState extends State<TimeCircle> with AnimationMixin {
 	AnimationCenter animationCenter = Get.find<AnimationCenter>();
   TimerVM viewmodel = Get.find<TimerVM>();
 
+	late AnimationController _timerTimeController;
+	late AnimationController _timerCircleController;
+	late Animation<Duration> _timerTimeAnimation;
+	late Animation<double> _timerCircleAnimation;
+
   @override
   void initState() {
-    super.initState();
-		if(animationCenter.getAnimationController(TimsAnimation.timerCircle) == null) {
-			animationCenter.setAnimationController(TimsAnimation.timerCircle, createController());
-			animationCenter.setAnimationController(TimsAnimation.timerTime, createController());
-			animationCenter.initTimerAnimation();
-		}
+		super.initState();
+		// Init animation controller
+		_timerTimeController = createController();
+		_timerCircleController = createController();
+		// Init animation
+		_timerTimeAnimation = Tween<Duration>(begin: viewmodel.currentTimerDuration, end: Duration.zero)
+				.animate(_timerTimeController);
+		_timerCircleAnimation = Tween<double>(begin: 1, end: 0)
+				.animate(_timerCircleController);
   }
 
   @override
@@ -93,12 +101,12 @@ class _TimeCircleState extends State<TimeCircle> with AnimationMixin {
                 child: CircularProgressIndicator(
                     color: whiteColorDarkTheme,
                     strokeWidth: 10,
-                    value:animationCenter.getAnimation(TimsAnimation.timerCircle)!.value),
+                    value: _timerCircleAnimation.value)
               )
             ],
           ),
           timsTextBuilder(
-              text: formattedTimerString(animationCenter.getAnimation(TimsAnimation.timerTime)!),
+              text: formattedTimerString(_timerTimeAnimation),
               textSize: 38,
               fontWeight: FontWeight.w400),
         ],

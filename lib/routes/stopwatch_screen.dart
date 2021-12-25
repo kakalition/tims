@@ -1,16 +1,16 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_animations/simple_animations.dart';
-import 'package:tims/enum/viewmodel_source.dart';
 import 'package:tims/utils.dart';
 import 'package:tims/viewmodels/animation_center.dart';
 import 'package:tims/viewmodels/main_viewmodel.dart';
 import 'package:tims/viewmodels/stopwatch_viewmodel.dart';
 import 'package:tims/widgets/play_pause_button.dart';
-import 'dart:math' as math;
 
 import '../constants.dart';
+import '../enum/viewmodel_source.dart';
 import 'timer_list_screen.dart';
 
 class StopwatchScreen extends StatelessWidget {
@@ -59,15 +59,21 @@ class _StopwatchCircleState extends State<StopwatchCircle> with AnimationMixin {
 	AnimationCenter animationCenter = Get.find<AnimationCenter>();
 	StopwatchVM viewmodel = Get.put(StopwatchVM());
 
+	late AnimationController _stopwatchTimeController;
+	late AnimationController _stopwatchCircleController;
+	late Animation<Duration> _stopwatchTimeAnimation;
+	late Animation<double> _stopwatchCircleAnimation;
+
   @override
   void initState() {
     super.initState();
-		if(animationCenter.getAnimationController(TimsAnimation.stopwatchCircle) == null) {
-			animationCenter.setAnimationController(TimsAnimation.stopwatchCircle, createController());
-			animationCenter.setAnimationController(TimsAnimation.stopwatchTime, createController());
-			animationCenter.initStopwatchAnimation();
-		}
-  }
+	  _stopwatchTimeController = createController();
+	  _stopwatchCircleController = createController();
+		_stopwatchTimeAnimation = Tween<Duration>(begin: Duration.zero, end: const Duration(days: 2))
+				.animate(_stopwatchTimeController);
+		_stopwatchCircleAnimation = Tween<double>(begin: 0, end: 2)
+				.animate(_stopwatchCircleController);
+	}
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +90,7 @@ class _StopwatchCircleState extends State<StopwatchCircle> with AnimationMixin {
           ),
         ),
         Transform.rotate(
-          angle: math.pi * animationCenter.getAnimation(TimsAnimation.stopwatchCircle)!.value,
+          angle: math.pi * _stopwatchCircleAnimation.value,
           child: Container(
             height: mainViewmodel.circleTimerSize,
             width: mainViewmodel.circleTimerSize,
@@ -100,7 +106,7 @@ class _StopwatchCircleState extends State<StopwatchCircle> with AnimationMixin {
           ),
         ),
 				timsTextBuilder(
-						text: formattedTimerString(animationCenter.getAnimation(TimsAnimation.stopwatchTime)!),
+						text: formattedTimerString(_stopwatchTimeAnimation),
 						textSize: 38,
 						fontWeight: FontWeight.w400),
       ],
