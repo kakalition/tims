@@ -67,12 +67,18 @@ class _StopwatchCircleState extends State<StopwatchCircle> with AnimationMixin {
   @override
   void initState() {
     super.initState();
+		// Init animation controller
 	  _stopwatchTimeController = createController();
 	  _stopwatchCircleController = createController();
+		// Init animation
 		_stopwatchTimeAnimation = Tween<Duration>(begin: Duration.zero, end: const Duration(days: 2))
 				.animate(_stopwatchTimeController);
 		_stopwatchCircleAnimation = Tween<double>(begin: 0, end: 2)
 				.animate(_stopwatchCircleController);
+		// Init stopwatch time duration
+		_stopwatchTimeController.duration = const Duration(days: 2);
+		_stopwatchTimeController.reverseDuration = const Duration(seconds: 2);
+		_stopwatchCircleController.duration = const Duration(milliseconds: 1500);
 	}
 
   @override
@@ -113,3 +119,4 @@ class _StopwatchCircleState extends State<StopwatchCircle> with AnimationMixin {
     );
   }
 }
+

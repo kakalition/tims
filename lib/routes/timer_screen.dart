@@ -66,6 +66,12 @@ class _TimeCircleState extends State<TimeCircle> with AnimationMixin {
 	late Animation<Duration> _timerTimeAnimation;
 	late Animation<double> _timerCircleAnimation;
 
+
+	void initTimerDuration() {
+		_timerTimeController.duration = viewmodel.currentTimerDuration;
+		_timerCircleController.duration = viewmodel.currentTimerDuration;
+	}
+
   @override
   void initState() {
 		super.initState();
@@ -77,6 +83,8 @@ class _TimeCircleState extends State<TimeCircle> with AnimationMixin {
 				.animate(_timerTimeController);
 		_timerCircleAnimation = Tween<double>(begin: 1, end: 0)
 				.animate(_timerCircleController);
+		// Init time duration
+		initTimerDuration();
   }
 
   @override
