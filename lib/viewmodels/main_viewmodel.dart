@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tims/interfaces/i_clock_mediator.dart';
+import 'package:tims/notification_service.dart';
 
 class MainVM extends GetxController {
   RxInt navigationIndex = 0.obs;
@@ -41,4 +43,11 @@ class MainVM extends GetxController {
 		_digitSpacing = MediaQuery.of(context).size.width * 0.03;
     _digitPieceSize = MediaQuery.of(context).size.width * 0.15;
 	}
+
+	final NotificationService _notificationService = NotificationService();
+	NotificationService get notificationService => _notificationService;
+
+	IClockMediator? _timerMediator;
+	IClockMediator get timerMediator => _timerMediator!;
+	set timerMediator(IClockMediator timerMediator) => _timerMediator = timerMediator;
 }
