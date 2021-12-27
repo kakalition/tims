@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tims/interfaces/i_clock.dart';
 import 'package:tims/interfaces/i_show_notification.dart';
+import 'package:tims/interfaces/i_timer.dart';
 
 import '../notification_service.dart';
 
-class TimerVM extends GetxController implements IClock, IShowNotification{
+class TimerVM extends GetxController implements ITimer, IShowNotification{
 
 	final RxBool _clockActiveStatus = false.obs;
 
@@ -29,6 +29,7 @@ class TimerVM extends GetxController implements IClock, IShowNotification{
 
   @override
   void playClock() {
+		_clockActiveStatus.value = true;
 		_clockController!.forward();
   }
 

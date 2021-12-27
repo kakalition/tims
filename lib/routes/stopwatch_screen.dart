@@ -2,9 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:simple_animations/simple_animations.dart';
 import 'package:tims/utils.dart';
-import 'package:tims/viewmodels/animation_center.dart';
 import 'package:tims/viewmodels/main_viewmodel.dart';
 import 'package:tims/viewmodels/stopwatch_viewmodel.dart';
 import 'package:tims/widgets/play_pause_button.dart';
@@ -18,8 +16,6 @@ class StopwatchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    StopwatchVM viewmodel = Get.put(StopwatchVM());
-
     return Container(
       color: backgroundDarkTheme,
       child: Center(
@@ -54,31 +50,36 @@ class StopwatchCircle extends StatefulWidget {
   State<StopwatchCircle> createState() => _StopwatchCircleState();
 }
 
-class _StopwatchCircleState extends State<StopwatchCircle> with AnimationMixin {
+class _StopwatchCircleState extends State<StopwatchCircle> with TickerProviderStateMixin{
 	MainVM mainViewmodel = Get.find<MainVM>();
-	AnimationCenter animationCenter = Get.find<AnimationCenter>();
 	StopwatchVM viewmodel = Get.put(StopwatchVM());
 
-	late AnimationController _stopwatchTimeController;
-	late AnimationController _stopwatchCircleController;
+	late AnimationController _timeController;
+	late AnimationController _circleController;
 	late Animation<Duration> _stopwatchTimeAnimation;
 	late Animation<double> _stopwatchCircleAnimation;
 
   @override
   void initState() {
     super.initState();
+
 		// Init animation controller
-	  _stopwatchTimeController = createController();
-	  _stopwatchCircleController = createController();
+	  _timeController = viewmodel.setTimeController(
+        AnimationController(duration: const Duration(days: 31), reverseDuration: const Duration(milliseconds: 600), vsync: this));
+	  _circleController = viewmodel.setCircleController(
+        AnimationController(duration: const Duration(milliseconds: 1500), reverseDuration: const Duration(milliseconds: 600), vsync: this));
+		
 		// Init animation
-		_stopwatchTimeAnimation = Tween<Duration>(begin: Duration.zero, end: const Duration(days: 2))
-				.animate(_stopwatchTimeController);
+		_stopwatchTimeAnimation = Tween<Duration>(begin: Duration.zero, end: const Duration(days: 31))
+				.animate(_timeController)
+      ..addListener(() {
+        setState(() {});
+      });
 		_stopwatchCircleAnimation = Tween<double>(begin: 0, end: 2)
-				.animate(_stopwatchCircleController);
-		// Init stopwatch time duration
-		_stopwatchTimeController.duration = const Duration(days: 2);
-		_stopwatchTimeController.reverseDuration = const Duration(seconds: 2);
-		_stopwatchCircleController.duration = const Duration(milliseconds: 1500);
+				.animate(_circleController)
+      ..addListener(() {
+        setState(() {});
+      });
 	}
 
   @override

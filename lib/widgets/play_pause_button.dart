@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:tims/enum/playpause_button_state.dart';
 import 'package:tims/enum/viewmodel_source.dart';
 import 'package:tims/interfaces/i_clock_component.dart';
-import 'package:tims/viewmodels/animation_center.dart';
 import 'package:tims/viewmodels/main_viewmodel.dart';
 import 'package:tims/viewmodels/stopwatch_viewmodel.dart';
 import 'package:tims/viewmodels/timer_viewmodel.dart';
@@ -21,7 +20,6 @@ class PlayPauseButton extends StatefulWidget implements IClockComponent {
 class _PlayPauseButtonState extends State<PlayPauseButton>
     with TickerProviderStateMixin {
   final MainVM _mainViewmodel = Get.find<MainVM>();
-  final AnimationCenter _animationCenter = Get.find<AnimationCenter>();
   late dynamic _viewmodel;
 
   late AnimationController _playPauseButtonController;
@@ -44,7 +42,11 @@ class _PlayPauseButtonState extends State<PlayPauseButton>
       ..duration = const Duration(milliseconds: 200);
 
     // Viewmodel Assignment
-    _viewmodel = Get.find<TimerVM>();
+		if(widget.source == ViewmodelSource.timer) {
+			_viewmodel = Get.find<TimerVM>();
+		} else {
+			_viewmodel = Get.find<StopwatchVM>();
+		}
 
     // Initialize Widget Animation;
     _playPauseButtonAnimation = Tween<double>(begin: 1, end: 1.05)
@@ -111,7 +113,7 @@ class _PlayPauseButtonState extends State<PlayPauseButton>
                 BorderRadius.circular(_mainViewmodel.restartButtonSize),
             child: InkWell(
               onTap: () async {
-                await (_viewmodel as TimerVM).restartClock();
+                await _viewmodel.restartClock();
                 // Animate Play Icon and Reverse Reveal
                 _playPauseButtonController.reverse();
                 _playPauseIconController.reverse();
