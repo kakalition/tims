@@ -8,7 +8,6 @@ import 'package:tims/viewmodels/stopwatch_viewmodel.dart';
 import 'package:tims/widgets/play_pause_button.dart';
 
 import '../constants.dart';
-import '../enum/viewmodel_source.dart';
 import 'timer_list_screen.dart';
 
 class StopwatchScreen extends StatelessWidget {
@@ -32,7 +31,7 @@ class StopwatchScreen extends StatelessWidget {
             // Play/Stop Button
             SizedBox(
                 height: MediaQuery.of(context).size.height * 0.27,
-                child: const PlayPauseButton(source: ViewmodelSource.stopwatch)),
+                child: PlayPauseButton(viewmodel: Get.find<StopwatchVM>())),
 						const TimerListTile(),
           ],
         ),

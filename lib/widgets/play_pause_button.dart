@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tims/enum/playpause_button_state.dart';
-import 'package:tims/enum/viewmodel_source.dart';
 import 'package:tims/interfaces/i_clock_component.dart';
 import 'package:tims/viewmodels/main_viewmodel.dart';
-import 'package:tims/viewmodels/stopwatch_viewmodel.dart';
-import 'package:tims/viewmodels/timer_viewmodel.dart';
 
 import '../constants.dart';
 
 class PlayPauseButton extends StatefulWidget implements IClockComponent {
-  const PlayPauseButton({Key? key, required this.source}) : super(key: key);
-  final ViewmodelSource source;
+  const PlayPauseButton({Key? key, required viewmodel}) : 
+		_viewmodel = viewmodel,
+	  super(key: key);
+	
+	final dynamic _viewmodel;
 
   @override
   State<PlayPauseButton> createState() => _PlayPauseButtonState();
@@ -20,7 +19,6 @@ class PlayPauseButton extends StatefulWidget implements IClockComponent {
 class _PlayPauseButtonState extends State<PlayPauseButton>
     with TickerProviderStateMixin {
   final MainVM _mainViewmodel = Get.find<MainVM>();
-  late dynamic _viewmodel;
 
   late AnimationController _playPauseButtonController;
   late AnimationController _playPauseIconController;
@@ -37,16 +35,9 @@ class _PlayPauseButtonState extends State<PlayPauseButton>
     _playPauseButtonController = AnimationController(vsync: this)
       ..duration = const Duration(milliseconds: 150);
     _playPauseIconController = AnimationController(vsync: this)
-      ..duration = const Duration(milliseconds: 150);
+      ..duration = const Duration(milliseconds: 75);
     _revealButtonController = AnimationController(vsync: this)
       ..duration = const Duration(milliseconds: 200);
-
-    // Viewmodel Assignment
-		if(widget.source == ViewmodelSource.timer) {
-			_viewmodel = Get.find<TimerVM>();
-		} else {
-			_viewmodel = Get.find<StopwatchVM>();
-		}
 
     // Initialize Widget Animation;
     _playPauseButtonAnimation = Tween<double>(begin: 1, end: 1.05)
@@ -65,14 +56,11 @@ class _PlayPauseButtonState extends State<PlayPauseButton>
       });
   }
 
-  void animateButton(PlayPauseButtonState state) async {
-    // Button tapped
-    if (state == PlayPauseButtonState.tap) {
-      // Circle animation
-      if (!_viewmodel.getClockActiveStatus()) {
-        _viewmodel.playClock();
+	Future<void> tapButton() async {
+      if (!widget._viewmodel.getClockActiveStatus()) {
+        widget._viewmodel.playClock();
       } else {
-        _viewmodel.stopClock();
+        widget._viewmodel.stopClock();
       }
 
       // Button forward animation
@@ -90,15 +78,15 @@ class _PlayPauseButtonState extends State<PlayPauseButton>
       // Button reverse animation
       await _playPauseButtonController.reverse();
 
-      // Button holded
-    } else if (state == PlayPauseButtonState.hold) {
+	}
+	
+	Future<void> holdButton() async {
       await _playPauseButtonController.forward();
+	}
 
-      // Button tap canceled
-    } else if (state == PlayPauseButtonState.cancel) {
+	Future<void> cancelButton() async {
       await _playPauseButtonController.reverse();
-    }
-  }
+	}
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +101,7 @@ class _PlayPauseButtonState extends State<PlayPauseButton>
                 BorderRadius.circular(_mainViewmodel.restartButtonSize),
             child: InkWell(
               onTap: () async {
-                await _viewmodel.restartClock();
+                await widget._viewmodel.restartClock();
                 // Animate Play Icon and Reverse Reveal
                 _playPauseButtonController.reverse();
                 _playPauseIconController.reverse();
@@ -146,13 +134,13 @@ class _PlayPauseButtonState extends State<PlayPauseButton>
             borderRadius: BorderRadius.circular(_mainViewmodel.playButtonSize),
             child: InkWell(
               onTap: () {
-                animateButton(PlayPauseButtonState.tap);
+								tapButton();
               },
               onTapDown: (TapDownDetails details) {
-                animateButton(PlayPauseButtonState.hold);
+								holdButton();
               },
               onTapCancel: () {
-                animateButton(PlayPauseButtonState.cancel);
+								cancelButton();
               },
               borderRadius:
                   BorderRadius.circular(_mainViewmodel.playButtonSize),

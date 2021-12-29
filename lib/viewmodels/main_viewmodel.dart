@@ -35,9 +35,9 @@ class MainVM extends GetxController {
 		_scrollableHeight = MediaQuery.of(context).size.height * 0.88;
 		_circleTimerSize = MediaQuery.of(context).size.width * 0.62;
 		_circleClockSize = MediaQuery.of(context).size.height * 0.26;
-		_playButtonSize = _circleTimerSize / 1.618 / 1.8;
+		_playButtonSize = _circleTimerSize / 1.618 / 1.6;
 		_restartButtonSize = _playButtonSize / 1.618;
-		_playIconSize = _playButtonSize * 0.5;
+		_playIconSize = _playButtonSize * 0.45;
 		_restartIconSize = _restartButtonSize * 0.4;
 		_revealLengthFactor = MediaQuery.of(context).size.height * 0.16; 
 		_digitSpacing = MediaQuery.of(context).size.width * 0.03;

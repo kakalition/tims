@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tims/enum/viewmodel_source.dart';
 import 'package:tims/interfaces/i_clock_component.dart';
 import 'package:tims/interfaces/i_clock_mediator.dart';
 import 'package:tims/viewmodels/animation_center.dart';
@@ -14,7 +13,7 @@ import 'timer_list_screen.dart';
 
 class TimerScreen extends StatelessWidget implements IClockMediator {
   TimerScreen({Key? key}) : super(key: key);
-  final TimerVM viewmodel = Get.put(TimerVM());
+  final TimerVM _viewmodel = Get.put(TimerVM());
 
   @override
   Widget build(BuildContext context) {
@@ -27,17 +26,19 @@ class TimerScreen extends StatelessWidget implements IClockMediator {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
           children: [
+						const Spacer(),
             const TimeCircle(),
             const SizedBox(
               height: 30,
             ),
             SizedBox(
                 height: MediaQuery.of(context).size.height * 0.27,
-                child: const PlayPauseButton(source: ViewmodelSource.timer)),
-            const Align(
-              alignment: Alignment.bottomCenter,
-              child: TimerListTile(),
-            )
+                child: PlayPauseButton(viewmodel: _viewmodel)),
+						const Spacer(),
+            const TimerListTile(),
+            const SizedBox(
+              height: 20,
+            ),
           ],
         ),
       ),
@@ -50,17 +51,17 @@ class TimerScreen extends StatelessWidget implements IClockMediator {
       switch (event) {
         case 'play':
           {
-            viewmodel.playClock();
+            _viewmodel.playClock();
             break;
           }
         case 'stop':
           {
-            viewmodel.stopClock();
+            _viewmodel.stopClock();
             break;
           }
         case 'restart':
           {
-            viewmodel.restartClock();
+            _viewmodel.restartClock();
             break;
           }
       }
