@@ -19,5 +19,5 @@ Widget timsTextBuilder(
 }
 
 // Formatted Timer String
-String formattedTimerString(Animation animation) =>
-		"${(animation.value as Duration).inMinutes.toString().padLeft(2, '0')}:${((animation.value as Duration).inSeconds % 60).toString().padLeft(2, '0')}";
+String formattedTimerString(Animation<Duration> animation) =>
+		"${(animation.value.inMinutes.toString().padLeft(2, '0'))}:${(animation.value.inSeconds % 60).toString().padLeft(2, '0')}";

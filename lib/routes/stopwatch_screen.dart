@@ -1,14 +1,11 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:simple_animations/simple_animations.dart';
-import 'package:tims/enum/viewmodel_source.dart';
 import 'package:tims/utils.dart';
-import 'package:tims/viewmodels/animation_center.dart';
 import 'package:tims/viewmodels/main_viewmodel.dart';
 import 'package:tims/viewmodels/stopwatch_viewmodel.dart';
 import 'package:tims/widgets/play_pause_button.dart';
-import 'dart:math' as math;
 
 import '../constants.dart';
 import 'timer_list_screen.dart';
@@ -18,8 +15,6 @@ class StopwatchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    StopwatchVM viewmodel = Get.put(StopwatchVM());
-
     return Container(
       color: backgroundDarkTheme,
       child: Center(
@@ -36,7 +31,7 @@ class StopwatchScreen extends StatelessWidget {
             // Play/Stop Button
             SizedBox(
                 height: MediaQuery.of(context).size.height * 0.27,
-                child: const PlayPauseButton(source: ViewmodelSource.stopwatch)),
+                child: PlayPauseButton(viewmodel: Get.find<StopwatchVM>())),
 						const TimerListTile(),
           ],
         ),
@@ -54,20 +49,37 @@ class StopwatchCircle extends StatefulWidget {
   State<StopwatchCircle> createState() => _StopwatchCircleState();
 }
 
-class _StopwatchCircleState extends State<StopwatchCircle> with AnimationMixin {
+class _StopwatchCircleState extends State<StopwatchCircle> with TickerProviderStateMixin{
 	MainVM mainViewmodel = Get.find<MainVM>();
-	AnimationCenter animationCenter = Get.find<AnimationCenter>();
 	StopwatchVM viewmodel = Get.put(StopwatchVM());
+
+	late AnimationController _timeController;
+	late AnimationController _circleController;
+	late Animation<Duration> _stopwatchTimeAnimation;
+	late Animation<double> _stopwatchCircleAnimation;
 
   @override
   void initState() {
     super.initState();
-		if(animationCenter.getAnimationController(TimsAnimation.stopwatchCircle) == null) {
-			animationCenter.setAnimationController(TimsAnimation.stopwatchCircle, createController());
-			animationCenter.setAnimationController(TimsAnimation.stopwatchTime, createController());
-			animationCenter.initStopwatchAnimation();
-		}
-  }
+
+		// Init animation controller
+	  _timeController = viewmodel.setTimeController(
+        AnimationController(duration: const Duration(days: 31), reverseDuration: const Duration(milliseconds: 600), vsync: this));
+	  _circleController = viewmodel.setCircleController(
+        AnimationController(duration: const Duration(milliseconds: 1500), reverseDuration: const Duration(milliseconds: 600), vsync: this));
+		
+		// Init animation
+		_stopwatchTimeAnimation = Tween<Duration>(begin: Duration.zero, end: const Duration(days: 31))
+				.animate(_timeController)
+      ..addListener(() {
+        setState(() {});
+      });
+		_stopwatchCircleAnimation = Tween<double>(begin: 0, end: 2)
+				.animate(_circleController)
+      ..addListener(() {
+        setState(() {});
+      });
+	}
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +96,7 @@ class _StopwatchCircleState extends State<StopwatchCircle> with AnimationMixin {
           ),
         ),
         Transform.rotate(
-          angle: math.pi * animationCenter.getAnimation(TimsAnimation.stopwatchCircle)!.value,
+          angle: math.pi * _stopwatchCircleAnimation.value,
           child: Container(
             height: mainViewmodel.circleTimerSize,
             width: mainViewmodel.circleTimerSize,
@@ -100,10 +112,11 @@ class _StopwatchCircleState extends State<StopwatchCircle> with AnimationMixin {
           ),
         ),
 				timsTextBuilder(
-						text: formattedTimerString(animationCenter.getAnimation(TimsAnimation.stopwatchTime)!),
+						text: formattedTimerString(_stopwatchTimeAnimation),
 						textSize: 38,
 						fontWeight: FontWeight.w400),
       ],
     );
   }
 }
+

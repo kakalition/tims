@@ -18,6 +18,8 @@ class MainRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     MainVM viewmodel = Get.find<MainVM>();
+		TimerScreen timerScreen = TimerScreen(key: const PageStorageKey('Timer Screen'));
+		viewmodel.timerMediator = timerScreen;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -53,11 +55,11 @@ class MainRoute extends StatelessWidget {
             child: Obx(
               () => IndexedStack(
 							index: viewmodel.navigationIndex.value,
-							children: const [
-								TimerScreen(key: PageStorageKey('Timer Screen')),
-								StopwatchScreen(key: PageStorageKey('Stopwatch Screen')),
-								TimerListScreen(key: PageStorageKey('Timer List Screen')),
-								HistoryScreen(key: PageStorageKey('History Screen')),
+							children: [
+								timerScreen,
+								const StopwatchScreen(key: PageStorageKey('Stopwatch Screen')),
+								const TimerListScreen(key: PageStorageKey('Timer List Screen')),
+								const HistoryScreen(key: PageStorageKey('History Screen')),
 							],
 						),
             ) 

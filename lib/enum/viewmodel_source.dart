@@ -1,4 +1,0 @@
-enum ViewmodelSource {
-  timer,
-  stopwatch,
-}

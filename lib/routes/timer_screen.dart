@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:simple_animations/simple_animations.dart';
-import 'package:tims/enum/viewmodel_source.dart';
+import 'package:tims/interfaces/i_clock_component.dart';
+import 'package:tims/interfaces/i_clock_mediator.dart';
 import 'package:tims/viewmodels/animation_center.dart';
 import 'package:tims/viewmodels/main_viewmodel.dart';
 import 'package:tims/viewmodels/timer_viewmodel.dart';
@@ -11,14 +11,13 @@ import '../constants.dart';
 import '../utils.dart';
 import 'timer_list_screen.dart';
 
-class TimerScreen extends StatelessWidget {
-  const TimerScreen({Key? key}) : super(key: key);
+class TimerScreen extends StatelessWidget implements IClockMediator {
+  TimerScreen({Key? key}) : super(key: key);
+  final TimerVM _viewmodel = Get.put(TimerVM());
 
   @override
   Widget build(BuildContext context) {
-    TimerVM viewmodel = Get.put(TimerVM());
-    
-		// Timer Screen Layout
+    // Timer Screen Layout
     return Container(
       color: backgroundDarkTheme,
       child: Center(
@@ -27,23 +26,47 @@ class TimerScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
           children: [
+						const Spacer(),
             const TimeCircle(),
             const SizedBox(
               height: 30,
             ),
             SizedBox(
-							height: MediaQuery.of(context).size.height * 0.27,
-							child: const PlayPauseButton(source: ViewmodelSource.timer)),
-						const Align(
-							alignment: Alignment.bottomCenter,
-							child: TimerListTile(),
-						)
+                height: MediaQuery.of(context).size.height * 0.27,
+                child: PlayPauseButton(viewmodel: _viewmodel)),
+						const Spacer(),
+            const TimerListTile(),
+            const SizedBox(
+              height: 20,
+            ),
           ],
         ),
       ),
     );
   }
 
+  @override
+  void notify(IClockComponent component, String event) {
+    if (component is PlayPauseButton) {
+      switch (event) {
+        case 'play':
+          {
+            _viewmodel.playClock();
+            break;
+          }
+        case 'stop':
+          {
+            _viewmodel.stopClock();
+            break;
+          }
+        case 'restart':
+          {
+            _viewmodel.restartClock();
+            break;
+          }
+      }
+    }
+  }
 }
 
 // Circle in Timer Screen
@@ -56,19 +79,45 @@ class TimeCircle extends StatefulWidget {
   State<TimeCircle> createState() => _TimeCircleState();
 }
 
-class _TimeCircleState extends State<TimeCircle> with AnimationMixin {
-	MainVM mainViewmodel = Get.find<MainVM>();
-	AnimationCenter animationCenter = Get.find<AnimationCenter>();
+class _TimeCircleState extends State<TimeCircle>
+    with SingleTickerProviderStateMixin {
+  MainVM mainViewmodel = Get.find<MainVM>();
+  AnimationCenter animationCenter = Get.find<AnimationCenter>();
   TimerVM viewmodel = Get.find<TimerVM>();
+
+  late AnimationController _clockController;
+  late Animation<Duration> _timerTimeAnimation;
+  late Animation<double> _timerCircleAnimation;
 
   @override
   void initState() {
     super.initState();
-		if(animationCenter.getAnimationController(TimsAnimation.timerCircle) == null) {
-			animationCenter.setAnimationController(TimsAnimation.timerCircle, createController());
-			animationCenter.setAnimationController(TimsAnimation.timerTime, createController());
-			animationCenter.initTimerAnimation();
-		}
+
+    // Init animation controller
+    _clockController = viewmodel.setClockController(
+        AnimationController(duration: const Duration(seconds: 5), reverseDuration: const Duration(milliseconds: 600), vsync: this))
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          viewmodel.showNotification(
+              mainViewmodel.notificationService, 'Title', 'Body');
+        }
+      });
+
+    // Init animation
+    _timerTimeAnimation = Tween<Duration>(
+            begin: viewmodel.currentTimerDuration, end: Duration.zero)
+        .animate(_clockController)
+      ..addListener(() {
+        setState(() {});
+      });
+    _timerCircleAnimation =
+        Tween<double>(begin: 1, end: 0).animate(_clockController)
+          ..addListener(() {
+            setState(() {});
+          });
+
+    // Init time duration
+    viewmodel.setTimerDuration();
   }
 
   @override
@@ -82,23 +131,22 @@ class _TimeCircleState extends State<TimeCircle> with AnimationMixin {
           Stack(
             children: [
               SizedBox(
-								height: mainViewmodel.circleTimerSize,
-								width: mainViewmodel.circleTimerSize,
+                height: mainViewmodel.circleTimerSize,
+                width: mainViewmodel.circleTimerSize,
                 child: const CircularProgressIndicator(
                     color: Color(0xFF212121), strokeWidth: 10, value: 1),
               ),
               SizedBox(
-								height: mainViewmodel.circleTimerSize,
-								width: mainViewmodel.circleTimerSize,
-                child: CircularProgressIndicator(
-                    color: whiteColorDarkTheme,
-                    strokeWidth: 10,
-                    value:animationCenter.getAnimation(TimsAnimation.timerCircle)!.value),
-              )
+                  height: mainViewmodel.circleTimerSize,
+                  width: mainViewmodel.circleTimerSize,
+                  child: CircularProgressIndicator(
+                      color: whiteColorDarkTheme,
+                      strokeWidth: 10,
+                      value: _timerCircleAnimation.value))
             ],
           ),
           timsTextBuilder(
-              text: formattedTimerString(animationCenter.getAnimation(TimsAnimation.timerTime)!),
+              text: formattedTimerString(_timerTimeAnimation),
               textSize: 38,
               fontWeight: FontWeight.w400),
         ],
@@ -106,4 +154,3 @@ class _TimeCircleState extends State<TimeCircle> with AnimationMixin {
     );
   }
 }
-
