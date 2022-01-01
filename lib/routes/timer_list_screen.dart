@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:simple_animations/simple_animations.dart';
 import 'package:tims/viewmodels/timer_list_viewmodel.dart';
 import 'package:tims/widgets/two_actionbutton.dart';
 
@@ -22,12 +21,8 @@ class TimerListScreen extends StatelessWidget {
         children: [
           ListView.builder(
               itemBuilder: (context, index) => const TimerListTile(), itemCount: 10),
-          PlayAnimation<double>(
-            tween: Tween<double>(begin: -50, end: 60),
-            duration: const Duration(milliseconds: 400),
-            curve: Curves.easeOut,
-            builder: (context, child, value) => Positioned(
-              bottom: value,
+						Positioned(
+              bottom: 30,
               child: Material(
                 color: whiteColorDarkTheme,
                 shape: const CircleBorder(),
@@ -75,7 +70,6 @@ class TimerListScreen extends StatelessWidget {
                 ),
               ),
             ),
-          ),
         ],
       ),
     );
